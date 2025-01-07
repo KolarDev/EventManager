@@ -1,26 +1,47 @@
 const mongoose = require("mongoose");
 
 const eventSchema = mongoose.Schema({
-  eventcreator: {
+  creator: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
    },
-  organisers: [
+  organizers: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
   ],
-  title: String,
-  venue: String,
-  price: Number,
-  description: String,
-  images: [String],
-  availability: {
-    type: Boolean,
-    default: true
+  title: {
+    type: String,
+    required: true
   },
+  description: {
+    type: String,
+    required: true
+  },
+  images: [String],
+  location: {
+    type: String,
+    required: true
+  },
+  ticketTypes: [
+    {
+        type: {
+            type: String,
+            enum: ['VIP', 'Standard', 'Early Bird'],
+            required: true
+        },
+        price: {
+            type: Number,
+            required: true
+        },
+        quantity: {
+            type: Number,
+            required: true
+        }
+    }
+  ],
   createdAt: {
     type: Date,
     default: Date.now

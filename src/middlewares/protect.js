@@ -1,9 +1,10 @@
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
+const User = require("./../models/user");
 const AppError = require("./../utils/appError");
 
-const protectRoute = (user) => {
-  return async (req, res, next) => {
+// protect routes for logged in users only
+const protectRoute = async (req, res, next) => {
     // Get the token from the authorization header
     let token;
     if (
@@ -19,7 +20,7 @@ const protectRoute = (user) => {
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
     // Check if user still exists
-    const confirmUser = await user.findById(decoded.id);
+    const confirmUser = await User.findById(decoded.id);
     if (!confirmUser) {
       return next(
         new AppError("Authentication Failed!, Try logging in again", 401)
@@ -29,10 +30,9 @@ const protectRoute = (user) => {
     // req.user means the loggedIn User
     req.user = confirmUser;
     next();
-  };
 };
 
-// Role based access control
+// Role based access control (RBAC)
 const restrictTo = (...roles) => {
   // ...roles stands for array to be passed into the function
   return (req, res, next) => {

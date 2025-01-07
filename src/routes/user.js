@@ -5,21 +5,21 @@ const {
   signUpUser,
   loginUser,
   userProfile,
-} = require("../controllers/userController");
+} = require("../controllers/user");
 
 const {
   sendToken,
   forgotPassword,
   resetPassword,
   updatePassword,
-} = require("../controllers/authController");
+} = require("../controllers/auth");
 
 const router = express.Router();
 
 router.post("/signup", signUpUser);
 router.post("/login", loginUser);
 
-router.use(protectRoute(User));
+router.use(protectRoute);
 
 router.get("/profile", userProfile);
 

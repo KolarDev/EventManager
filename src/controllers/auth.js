@@ -19,7 +19,7 @@ const sendOtp = async (req, res, next) => {
 
     if (!user) return next(new AppError("User not found!", 404));
 
-    await new Email(user).sendOtp();
+    // await new Email(user).sendOtp();
   } catch (error) {
     res.status(500).json({
       status: "success",

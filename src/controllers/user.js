@@ -1,7 +1,6 @@
 const User = require("./../models/user");
-const Hostel = require("./../models/hostel");
-const Cart = require("./../models/cart");
-const { sendToken } = require("./authController");
+const Event = require("./../models/event");
+const { sendToken } = require("./auth");
 const AppError = require("./../utils/appError");
 
 const signUpUser = async (req, res) => {
