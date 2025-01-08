@@ -5,7 +5,7 @@ const eventSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
-   },
+  },
   organizers: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -14,38 +14,42 @@ const eventSchema = mongoose.Schema({
   ],
   title: {
     type: String,
-    required: true
+    required: true,
+  },
+  category: {
+    type: String,
+    enum: ["Concerts", "Wedding", "Podcast"],
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   images: [String],
   location: {
     type: String,
-    required: true
+    required: true,
   },
   ticketTypes: [
     {
-        type: {
-            type: String,
-            enum: ['VIP', 'Standard', 'Early Bird'],
-            required: true
-        },
-        price: {
-            type: Number,
-            required: true
-        },
-        quantity: {
-            type: Number,
-            required: true
-        }
-    }
+      type: {
+        type: String,
+        enum: ["VIP", "Standard", "Early Bird"],
+        required: true,
+      },
+      price: {
+        type: Number,
+        required: true,
+      },
+      quantity: {
+        type: Number,
+        required: true,
+      },
+    },
   ],
   createdAt: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 const Event = mongoose.model("Event", eventSchema);
