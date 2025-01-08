@@ -135,7 +135,7 @@ const updatePassword = async (req, res, next) => {
 
   // 3. If current password is correct, Update password
   user.password = req.body.password;
-  user.passwordConfirm = req.body.passwordConfirm;
+  user.passwordConfirm = undefined;
   await user.save();
 
   // 4. Log the user in. Send jwt

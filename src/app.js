@@ -11,7 +11,7 @@ const hpp = require("hpp");
 const helmet = require("helmet");
 // Logging
 const morgan = require("morgan");
-//const logger = require("./logger");
+const logger = require("./logger");
 
 // Error Handling
 const AppError = require("./utils/appError");
@@ -45,16 +45,11 @@ app.use(
           status: message.split(" ")[2],
           responseTime: message.split(" ")[3],
         };
-        logger.info(JSON.stringify(logObject));
+        logger.log("info", JSON.stringify(logObject));
       },
     },
   })
 );
-
-// // Develeopment logging
-// if ((process.env.NODE_ENV = 'development')) {
-//   app.use(morgan('dev'));
-// }
 
 // Set Security HTTP Headers
 app.use(helmet());

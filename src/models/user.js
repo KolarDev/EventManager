@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please input your name"],
       maxLength: [40, "Name can not be more than 40 characters"],
-      minLength: [6, "Name can not be less than 6 characters"],
+      minLength: [5, "Name can not be less than 6 characters"],
     },
     email: {
       type: String,
@@ -38,11 +38,12 @@ const userSchema = new mongoose.Schema(
         },
         message: "Passwords are not the same!!",
       },
+      select: false,
     },
     role: {
-        type: String,
-        enum: ['user', 'admin'],
-        default: 'user'
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
     },
     createdAt: {
       type: Date,
@@ -88,7 +89,7 @@ userSchema.pre("save", async function (next) {
   // Hash password
   this.password = await bcrypt.hash(this.password, 12);
   // Clear passwordConfirm field
-  this.passwordConfirm === undefined;
+  this.passwordConfirm = undefined;
   // If road clear, move on....
   next();
 });

@@ -4,8 +4,7 @@ const { sendToken } = require("./auth");
 const AppError = require("./../utils/appError");
 
 const signUpUser = async (req, res) => {
-  const { firstname, othername, phone, email, password, passwordConfirm } =
-    req.body;
+  const { fullname, phone, email, password, passwordConfirm } = req.body;
 
   try {
     const user = await User.create({
@@ -76,9 +75,8 @@ const userProfile = async (req, res, next) => {
   }
 };
 
-
 module.exports = {
   signUpUser,
   loginUser,
-  userProfile
+  userProfile,
 };
