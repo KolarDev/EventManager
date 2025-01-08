@@ -14,13 +14,14 @@ const morgan = require("morgan");
 //const logger = require("./logger");
 
 // Error Handling
-// const errorHandler = require("./src/middlewares/errorHandler");
-// const AppError = require("./src/utils/appError");
+const AppError = require("./utils/appError");
+const errorHandler = require("./middlewares/errorHandler");
 
 // Routes
-const adminRoutes = require("./routes/admin");
 const userRoutes = require("./routes/user");
 const eventRoutes = require("./routes/event");
+const ticketRoutes = require("./routes/ticket");
+const cartRoutes = require("./routes/cart");
 
 const app = express();
 
@@ -96,7 +97,9 @@ app.get("/", (req, res) => {
 
 // Routes
 app.use("/api/v1/users", userRoutes);
-app.use("/api/v1/admin", eventRoutes);
+app.use("/api/v1/events", eventRoutes);
+app.use("/api/v1/tickets", ticketRoutes);
+app.use("/api/v1/carts", cartRoutes);
 
 // When user enters undefined route
 app.all("*", (req, res, next) => {
