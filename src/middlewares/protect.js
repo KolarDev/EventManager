@@ -5,31 +5,31 @@ const AppError = require("./../utils/appError");
 
 // protect routes for logged in users only
 const protectRoute = async (req, res, next) => {
-    // Get the token from the authorization header
-    let token;
-    if (
-      req.headers.authorization &&
-      req.headers.authorization.startsWith("Bearer ")
-    ) {
-      token = req.headers.authorization.split(" ")[1];
-    }
-    // If there is no token.It means the user is not logged in
-    if (!token) return next(new AppError("Please login to get access!", 401));
+  // Get the token from the authorization header
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer ")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  }
+  // If there is no token.It means the user is not logged in
+  if (!token) return next(new AppError("Please login to get access!", 401));
 
-    // Verifying the token. Server verifies by test signature
-    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  // Verifying the token. Server verifies by test signature
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
 
-    // Check if user still exists
-    const confirmUser = await User.findById(decoded.id);
-    if (!confirmUser) {
-      return next(
-        new AppError("Authentication Failed!, Try logging in again", 401)
-      );
-    }
+  // Check if user still exists
+  const confirmUser = await User.findById(decoded.id);
+  if (!confirmUser) {
+    return next(
+      new AppError("Authentication Failed!, Try logging in again", 401)
+    );
+  }
 
-    // req.user means the loggedIn User
-    req.user = confirmUser;
-    next();
+  // req.user means the loggedIn User
+  req.user = confirmUser;
+  next();
 };
 
 // Role based access control (RBAC)
@@ -44,6 +44,8 @@ const restrictTo = (...roles) => {
     next();
   };
 };
+
+restrictTo(["admin"]);
 
 module.exports = {
   protectRoute,

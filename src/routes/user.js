@@ -1,11 +1,7 @@
 const express = require("express");
 const User = require("../models/user");
 const { protectRoute, restrictTo } = require("../middlewares/protect");
-const {
-  signUpUser,
-  loginUser,
-  userProfile,
-} = require("../controllers/user");
+const { signUpUser, loginUser, userProfile } = require("../controllers/user");
 
 const {
   sendToken,

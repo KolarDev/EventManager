@@ -16,6 +16,10 @@ const eventSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  Date: {
+    type: Date,
+    default: Date.now,
+  },
   category: {
     type: String,
     enum: ["Concerts", "Wedding", "Podcast"],
