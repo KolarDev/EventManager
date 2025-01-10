@@ -12,5 +12,6 @@ const {
 const router = express.Router();
 
 router.use(protectRoute);
+router.post("/:id", createEvent);
 
 module.exports = router;
