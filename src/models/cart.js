@@ -12,7 +12,9 @@ const cartSchema = mongoose.Schema({
       ref: "Event",
     },
   ],
-});
+},
+{ timestamps: true }
+);
 
 const Cart = mongoose.model("Cart", cartSchema);
 module.exports = Cart;

@@ -16,7 +16,7 @@ const ticketSchema = mongoose.Schema({
     enum: ['VIP', 'Standard', 'Early Bird'],
     required: true
   },
-  qrcode: {
+  qrCode: {
     type: String,
     required: true
   },
@@ -24,9 +24,10 @@ const ticketSchema = mongoose.Schema({
     type: Number,
     required: true
   },
-  isValid: {
-    type: Boolean,
-    default: true
+  status: { 
+    type: String, 
+    enum: ['valid', 'used'], 
+    default: 'valid'
   },
   purchaseDate: {
     type: Date,
