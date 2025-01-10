@@ -21,7 +21,7 @@ const signUpUser = async (req, res) => {
       status: "failed !",
       message: "Error creating your account !",
     });
-    console.log(error);
+    // console.log(error);
   }
 };
 
@@ -46,7 +46,7 @@ const loginUser = async (req, res, next) => {
       status: "failed !",
       message: "Error logging in !",
     });
-    console.log(error);
+    // console.log(error);
   }
 };
 
@@ -60,10 +60,7 @@ const userProfile = async (req, res, next) => {
     res.status(200).json({
       status: "success",
       data: {
-        firstname: user.username,
-        othername: user.fullname,
-        email: user.email,
-        phone: user.phone,
+        user
       },
     });
   } catch (error) {
