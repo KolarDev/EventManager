@@ -12,6 +12,12 @@ const createEvent = async (req, res) => {
   try {
     newEvent.creator = id
     newEvent.organizers = [id]
+    if(newEvent.Date < new Date()) {
+      res.status(403).json({
+        status: "Failed",
+        message: "Date has passed, Choose a valid date"
+      })
+    }
     await newEvent.save()
     console.log(req)
     res.status(201).json({
