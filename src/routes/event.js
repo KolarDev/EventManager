@@ -13,6 +13,7 @@ const router = express.Router();
 
 router.use(protectRoute);
 router.post("/:id", createEvent);
-router.put("/:userId/:eventId", updateEvent)
+router.put("/:userId/:eventId", updateEvent);
+router.get("/:eventId", getEventById)
 
 module.exports = router;
