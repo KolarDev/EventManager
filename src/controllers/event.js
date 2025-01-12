@@ -3,7 +3,7 @@ const Event = require("./../models/event");
 const AppError = require("./../utils/appError");
 
 // Create an event
-const createEvent = async (req, res, next) => {
+const createEvent = async (req, res) => {
   // GET USERID from params
   const { id } = req.params;
   // CREATE NEW EVENT
@@ -91,7 +91,44 @@ const getEventById = async (req, res) => {
 };
 
 // Delete event (event can only be deleted if the event date has passed or no one has bought ticket)✍
-const deleteEvent = async (req, res, next) => { };
+const deleteEvent = async (req, res, next) => {
+  const { eventId, userId } = req.params;
+
+  try {
+
+    const event = await Event.findById(eventId)
+    // CHECK IF EVENT EXISTS
+    if (!event) {
+      return next(new AppError("Event doesnt exist", 404))
+    }
+    // CHECK IF USER IS A CREATOR OR ORGANIZER
+    const isAuthorized = event.creator === userId || event.organizers.includes(userId)
+    if(!isAuthorized) {
+      return next(new AppError("Unauthorized to delete", 403))
+    }
+
+    // CHECK IF TODAY'S DATE IS GREATER THAN EVENT'S DATE
+    const currentDate = new Date();
+
+    if (currentDate < event.Date) {
+      return next(new AppError(
+        "Cannot delete event. Event hasnt been done.", 400
+      ));
+    }
+
+    await Event.findByIdAndDelete(eventId);
+    res.status(200).json({
+      status: "Success",
+      message: "Event deleted successfully"
+    })
+
+  } catch (err) {
+    res.status(500).json({
+      status: "Failed",
+      message: "Error Deleting Event"
+    })
+  }
+};
 
 module.exports = {
   createEvent,
