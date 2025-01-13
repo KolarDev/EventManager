@@ -37,8 +37,7 @@ const createEvent = async (req, res) => {
 
 // Update event partially (PATCH) only event creator and organisers can update event
 const updateEvent = async (req, res) => {
-  const { eventId, userId } = req.params
-
+  const { eventId } = req.params;
   try {
     const event = await Event.findByIdAndUpdate(
       eventId, { $set: req.body }, { new: true }
@@ -48,7 +47,8 @@ const updateEvent = async (req, res) => {
     if (!event) {
       return res.status(404).json({ message: 'Event not found' });
     }
-    // CHECK IF USER IS A CREATOR OR ORGANIZER
+    // CHECK IF USER IS A CREATOR OR ORGANIZER\
+    const userId =  req.user.id
     const isAuthorized = event.creator === userId || event.organizers.includes(userId)
 
     if (!isAuthorized) {
@@ -84,6 +84,7 @@ const getEventById = async (req, res) => {
       return res.status(404).json("Event not found")
     }
 
+    console.log(req.user)
     res.status(200).json({
       status: "Success",
       event
@@ -98,7 +99,7 @@ const getEventById = async (req, res) => {
 
 // Delete event (event can only be deleted if the event date has passed or no one has bought ticket)✍
 const deleteEvent = async (req, res, next) => {
-  const { eventId, userId } = req.params;
+  const { eventId } = req.params;
 
   try {
 
@@ -108,6 +109,7 @@ const deleteEvent = async (req, res, next) => {
       return next(new AppError("Event doesnt exist", 404))
     }
     // CHECK IF USER IS A CREATOR OR ORGANIZER
+    const userId = req.user.id
     const isAuthorized = event.creator === userId || event.organizers.includes(userId)
     if(!isAuthorized) {
       return next(new AppError("Unauthorized to delete", 403))
