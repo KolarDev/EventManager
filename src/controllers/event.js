@@ -5,13 +5,14 @@ const AppError = require("./../utils/appError");
 // Create an event
 const createEvent = async (req, res) => {
   // GET USERID from params
-  const { id } = req.params;
+  const { id } = req.user
   // CREATE NEW EVENT
   const newEvent = new Event(req.body);
 
   try {
     newEvent.creator = id
     newEvent.organizers = [id]
+
     if(newEvent.Date < new Date()) {
       res.status(403).json({
         status: "Failed",
@@ -19,7 +20,6 @@ const createEvent = async (req, res) => {
       })
     }
     await newEvent.save()
-    console.log(req)
     res.status(201).json({
       status: "success",
       data: {
@@ -84,7 +84,6 @@ const getEventById = async (req, res) => {
       return res.status(404).json("Event not found")
     }
 
-    console.log(req.user)
     res.status(200).json({
       status: "Success",
       event
