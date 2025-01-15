@@ -3,7 +3,7 @@ const Event = require("./../models/event");
 const AppError = require("./../utils/appError");
 
 // Create an event
-const createEvent = async (req, res) => {
+const createEvent = async (req, res, next) => {
   // GET USERID from params
   const { id } = req.user
   // CREATE NEW EVENT
@@ -11,13 +11,12 @@ const createEvent = async (req, res) => {
 
   try {
     newEvent.creator = id
-    newEvent.organizers = [id]
+    newEvent.organizers.push(id)
 
-    if(newEvent.Date < new Date()) {
-      res.status(403).json({
-        status: "Failed",
-        message: "Date has passed, Choose a valid date"
-      })
+    if (newEvent.Date < new Date()) {
+      return next(new AppError(
+        "Date has passed, Choose a valid date", 403
+      ));
     }
     await newEvent.save()
     res.status(201).json({
@@ -27,44 +26,47 @@ const createEvent = async (req, res) => {
       }
     })
   } catch (err) {
-    return res.status(500).json({
-      status: "Failed",
-      message: "Error creating event !"
-    })
+    return next(new AppError(
+      "Error Creating event", 500
+    ));
   }
 
 };
 
 // Update event partially (PATCH) only event creator and organisers can update event
-const updateEvent = async (req, res) => {
+const updateEvent = async (req, res, next) => {
   const { eventId } = req.params;
   try {
-    const event = await Event.findByIdAndUpdate(
-      eventId, { $set: req.body }, { new: true }
-    )
+    const event = await Event.findById(eventId)
 
     // CHECK IF EVENT EXISTS
     if (!event) {
       return res.status(404).json({ message: 'Event not found' });
     }
-    // CHECK IF USER IS A CREATOR OR ORGANIZER\
-    const userId =  req.user.id
+    // CHECK IF USER IS A CREATOR OR ORGANIZER
+    const userId = req.user.id
     const isAuthorized = event.creator === userId || event.organizers.includes(userId)
 
     if (!isAuthorized) {
-      return res.status(403).json({ message: 'No access to update' });
+      return next(new AppError(
+        "No access to update", 403
+      ));
     }
+
+    await Event.findByIdAndUpdate(
+      eventId, { $set: req.body }, { new: true }
+    );
 
     res.status(200).json({
       status: "Success",
       message: 'Event updated successfully!',
       event
     });
+
   } catch (err) {
-    return res.status(500).json({
-      status: "Failed",
-      message: "Error updating event"
-    })
+    return next(new AppError(
+      "Error deleting event", 500
+    ));
   }
 };
 
@@ -73,7 +75,7 @@ const updateEvent = async (req, res) => {
 const getAllEvents = async (req, res) => { };
 
 // Get an event by ID
-const getEventById = async (req, res) => {
+const getEventById = async (req, res, next) => {
   const { eventId } = req.params;
 
   try {
@@ -81,7 +83,9 @@ const getEventById = async (req, res) => {
     const event = await Event.findById(eventId);
 
     if (!event) {
-      return res.status(404).json("Event not found")
+      return next(new AppError(
+        "Event not found", 404
+      ))
     }
 
     res.status(200).json({
@@ -110,7 +114,7 @@ const deleteEvent = async (req, res, next) => {
     // CHECK IF USER IS A CREATOR OR ORGANIZER
     const userId = req.user.id
     const isAuthorized = event.creator === userId || event.organizers.includes(userId)
-    if(!isAuthorized) {
+    if (!isAuthorized) {
       return next(new AppError("Unauthorized to delete", 403))
     }
 
@@ -130,10 +134,9 @@ const deleteEvent = async (req, res, next) => {
     })
 
   } catch (err) {
-    res.status(500).json({
-      status: "Failed",
-      message: "Error Deleting Event"
-    })
+    return next(new AppError(
+      "Error deleting event", 500
+    ))
   }
 };
 
