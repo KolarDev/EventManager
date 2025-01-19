@@ -1,34 +1,55 @@
-const User = require("./../models/user");
 const Event = require("./../models/event");
 const AppError = require("./../utils/appError");
 
 // Create an event
 const createEvent = async (req, res, next) => {
-  // GET USERID from params
-  const { id } = req.user
-  // CREATE NEW EVENT
-  const newEvent = new Event(req.body);
+
+  // GET USERID FROM REQ
+  const { id } = req.user;
+
+  const {
+    title, eventDate, category, description, location,
+    ticketTypes
+  } = req.body;
 
   try {
-    newEvent.creator = id
-    newEvent.organizers.push(id)
+    // CHECK IF DATE IS VALID
+    const currentTimestamp = Date.now(); // Current timestamp in milliseconds
 
-    if (newEvent.Date < new Date()) {
-      return next(new AppError(
-        "Date has passed, Choose a valid date", 403
-      ));
+    // Convert the input date string to a timestamp in milliseconds
+    const inputTimestamp = new Date(eventDate).getTime();
+    // Compare the two dates
+    if (inputTimestamp < currentTimestamp) {
+      return next(
+        new AppError("Date has passed, choose a valid date", 400)
+      );
     }
-    await newEvent.save()
+
+    // CREATE NEW EVENT
+    const newEvent = await Event.create({
+      creator: id,
+      organizers: [id],
+      title,
+      eventDate,
+      category,
+      description,
+      location,
+      ticketTypes
+    });
+
     res.status(201).json({
       status: "success",
       data: {
         newEvent
       }
-    })
+    });
+
   } catch (err) {
-    return next(new AppError(
-      "Error Creating event", 500
-    ));
+    res.status(500).json({
+      status: "Failed!",
+      message: "Error creating event !"
+    });
+    console.log(err);
   }
 
 };
@@ -41,7 +62,9 @@ const updateEvent = async (req, res, next) => {
 
     // CHECK IF EVENT EXISTS
     if (!event) {
-      return res.status(404).json({ message: 'Event not found' });
+      return next(new AppError(
+        "Event not found", 404
+      ))
     }
     // CHECK IF USER IS A CREATOR OR ORGANIZER
     const userId = req.user.id
@@ -72,7 +95,11 @@ const updateEvent = async (req, res, next) => {
 
 // Get all events
 // Option for advanced fitering by categories
-const getAllEvents = async (req, res) => { };
+const getAllEvents = async (req, res) => { 
+  const events = await Event.find();
+
+
+};
 
 // Get an event by ID
 const getEventById = async (req, res, next) => {
@@ -90,7 +117,9 @@ const getEventById = async (req, res, next) => {
 
     res.status(200).json({
       status: "Success",
-      event
+      data: {
+        event
+      }
     })
   } catch (error) {
     res.status(500).json({
@@ -106,7 +135,7 @@ const deleteEvent = async (req, res, next) => {
 
   try {
 
-    const event = await Event.findById(eventId)
+    const event = await Event.findById(eventId);
     // CHECK IF EVENT EXISTS
     if (!event) {
       return next(new AppError("Event doesnt exist", 404))
