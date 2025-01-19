@@ -54,6 +54,9 @@ app.use(
 // Set Security HTTP Headers
 app.use(helmet());
 
+// 1. Enable 'trust proxy'
+app.set("trust proxy", 1);
+
 // Limiting requests from same api
 app.use(
   "/api",
@@ -61,6 +64,7 @@ app.use(
     limit: 50,
     windowMs: 60 * 60 * 1000,
     message: "IP requets exceed limit, Check back in an hour!",
+    keyGenerator: (req, res) => req.ip, // Ensure it uses the real IP
   })
 );
 
