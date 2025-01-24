@@ -21,7 +21,7 @@ const signUpUser = async (req, res) => {
       status: "failed !",
       message: "Error creating your account !",
     });
-    // console.log(error);
+     console.log(error);
   }
 };
 
