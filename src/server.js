@@ -1,11 +1,5 @@
 const dotenv = require("dotenv");
 
-// process.on("uncaughtException", err => {
-//     console.log(err.name, err.message);
-//     console.log("UCAUGHT  EXCEPTION!!! 🔥");
-
-//     process.exit(1);
-// });
 
 dotenv.config({ path: "./config.env" });
 
@@ -25,4 +19,12 @@ process.on("unhandledRejection", (err) => {
   server.close(() => {
     process.exit(1);
   });
+});
+
+
+process.on("uncaughtException", err => {
+    console.log(err.name, err.message);
+    console.log("UNCAUGHT  EXCEPTION!!! 🔥");
+
+    process.exit(1);
 });

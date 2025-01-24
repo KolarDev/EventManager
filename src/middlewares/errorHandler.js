@@ -36,11 +36,6 @@ const sendErrorDev = (err, req, res) => {
       stack: err.stack,
     });
   } else {
-    // In Rendered Website
-    // res.status(err.statusCode).render("error", {
-    //   title: "Something went wrong!",
-    //   msg: err.message,
-    // });
     res.status(err.statusCode).json({
       title: "Something went wrong!",
       msg: err.message,
@@ -68,14 +63,10 @@ const sendErrorProd = (err, req, res) => {
     });
   }
 
-  // B) RENDERED WEBSITE
   // A) Operational, trusted error: send message to client
   if (err.isOperational) {
     console.log(err);
-    // return res.status(err.statusCode).render("error", {
-    //   title: "Something went wrong!",
-    //   msg: err.message,
-    // });
+   
     return res.status(err.statusCode).json({
       title: "Something went wrong!",
       msg: err.message,
@@ -85,10 +76,7 @@ const sendErrorProd = (err, req, res) => {
   // 1) Log error
   console.error("ERROR 💥", err);
   // 2) Send generic message
-  // return res.status(err.statusCode).render("error", {
-  //   title: "Something went wrong!",
-  //   msg: "Please try again later.",
-  // });
+ 
   return res.status(err.statusCode).json({
     title: "Something went wrong!",
     msg: "Please try again later.",
