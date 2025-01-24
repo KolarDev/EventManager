@@ -1,12 +1,12 @@
 const User = require("./../models/user");
 const Event = require("./../models/event");
 const { sendToken } = require("./auth");
+const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 
-const signUpUser = async (req, res) => {
+const signUpUser = catchAsync(async (req, res) => {
   const { fullname, phone, email, password, passwordConfirm } = req.body;
 
-  try {
     const user = await User.create({
       fullname,
       phone,
@@ -16,18 +16,11 @@ const signUpUser = async (req, res) => {
     });
 
     sendToken(user, 201, res);
-  } catch (error) {
-    res.status(500).json({
-      status: "failed !",
-      message: "Error creating your account !",
-    });
-     console.log(error);
-  }
-};
+});
 
 // Logging user in
-const loginUser = async (req, res, next) => {
-  try {
+const loginUser = catchAsync( async (req, res, next) => {
+
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -41,14 +34,7 @@ const loginUser = async (req, res, next) => {
     }
 
     sendToken(user, 200, res);
-  } catch (error) {
-    res.status(500).json({
-      status: "failed !",
-      message: "Error logging in !",
-    });
-    // console.log(error);
-  }
-};
+});
 
 // Get User Profile details
 const userProfile = async (req, res, next) => {

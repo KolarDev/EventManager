@@ -96,7 +96,7 @@ module.exports = (err, req, res, next) => {
 
     if (error.name === "CastError") error = handleCastErrorDB(error);
     if (error.code === 11000) error = handleDuplicateFieldsDB(error);
-    if (error.name === "ValidatorError") error = handleValidatorErrorDB(error);
+    if (error.name === "ValidationError") error = handleValidatorErrorDB(error);
     if (error.name === "JsonWebTokenError") error = handleJwtErrorDB();
     if (error.name === "TokenExpiredError") error = handleJwtExpiredErrorDB();
 
