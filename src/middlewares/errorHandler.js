@@ -43,45 +43,44 @@ const sendErrorDev = (err, req, res) => {
   }
 };
 
+
 const sendErrorProd = (err, req, res) => {
-  // A) API
+  // A) API ERRORS
   if (req.originalUrl.startsWith("/api")) {
-    // A) Operational, trusted error: send message to client
     if (err.isOperational) {
       return res.status(err.statusCode).json({
-        status: err.status,
-        message: err.message,
+        status: err.status || "error",
+        message: err.message || "An error occurred.",
       });
     }
-    // B) Programming or other unknown error: don't leak error details
-    // 1) Log error
+
+    // Log the error for debugging
     console.error("ERROR 💥", err);
-    // 2) Send generic message
+
+    // Send a generic message for unexpected errors
     return res.status(500).json({
       status: "error",
       message: "Something went very wrong!",
     });
   }
 
-  // A) Operational, trusted error: send message to client
+  // B) RENDERED WEBSITE ERRORS (For web pages)
   if (err.isOperational) {
-    console.log(err);
-   
     return res.status(err.statusCode).json({
       title: "Something went wrong!",
-      msg: err.message,
+      msg: err.message || "An error occurred. Please try again.",
     });
   }
-  // B) Programming or other unknown error: don't leak error details
-  // 1) Log error
+
+  // Log error and send generic error response
   console.error("ERROR 💥", err);
-  // 2) Send generic message
- 
-  return res.status(err.statusCode).json({
+
+  return res.status(500).json({
     title: "Something went wrong!",
     msg: "Please try again later.",
   });
 };
+
 
 module.exports = (err, req, res, next) => {
   console.log(err.stack);
