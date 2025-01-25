@@ -4,7 +4,7 @@ const { sendToken } = require("./auth");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 
-const signUpUser = catchAsync(async (req, res) => {
+const signUpUser = catchAsync(async (req, res, next) => {
   const { fullname, phone, email, password, passwordConfirm } = req.body;
 
     const user = await User.create({
@@ -17,6 +17,25 @@ const signUpUser = catchAsync(async (req, res) => {
 
     sendToken(user, 201, res);
 });
+
+// If not using catchAsync
+// const signUpUser = async (req, res, next) => {
+//   const { fullname, phone, email, password, passwordConfirm } = req.body;
+// try {
+
+//   const user = await User.create({
+//     fullname,
+//     phone,
+//     email,
+//     password,
+//     passwordConfirm,
+//   });
+
+//   sendToken(user, 201, res);
+// } catch (err) {
+//   next(err)
+// }
+// };
 
 // Logging user in
 const loginUser = catchAsync( async (req, res, next) => {
@@ -37,8 +56,8 @@ const loginUser = catchAsync( async (req, res, next) => {
 });
 
 // Get User Profile details
-const userProfile = async (req, res, next) => {
-  try {
+const userProfile = catchAsync(async (req, res, next) => {
+
     const user = await User.findById(req.user.id);
 
     if (!user) return next(new AppError("User not found", 404));
@@ -49,14 +68,8 @@ const userProfile = async (req, res, next) => {
         user
       },
     });
-  } catch (error) {
-    res.status(500).json({
-      status: "Failed!",
-      message: "Error fetching user data !",
-    });
-    //console.log(error);
-  }
-};
+  
+});
 
 module.exports = {
   signUpUser,
