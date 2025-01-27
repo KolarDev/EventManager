@@ -1,8 +1,10 @@
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
+const passport = require('passport');
 const bodyparser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const session = require('express-session');
 // Security
 const rateLimit = require("express-rate-limit");
 const mongoSanitize = require("express-mongo-sanitize");
@@ -12,6 +14,10 @@ const helmet = require("helmet");
 // Logging
 const morgan = require("morgan");
 const logger = require("./utils/logger");
+
+// Passport configuration
+require('./config/passport');
+
 
 // Error Handling
 const AppError = require("./utils/appError");
@@ -85,6 +91,19 @@ app.use(express.urlencoded({ extended: true, limit: "10kb" }));
 app.use(bodyparser.json());
 app.use(cookieParser());
 // app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// Session setup (for session-based auth)
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Home route
 app.get("/", (req, res) => {
