@@ -2,6 +2,7 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const { generateToken } = require("./../controllers/auth");
 
 dotenv.config();
 
@@ -23,7 +24,7 @@ passport.use(
         };
 
         // Generate JWT token
-        const token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = generateToken(user.id);
 
         return done(null, { user, token });
       } catch (error) {

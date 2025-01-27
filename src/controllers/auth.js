@@ -156,8 +156,10 @@ const sendToken = (user, statusCode, res) => {
 module.exports = {
   sendOtp,
   verifyOtp,
+  generateToken,
   sendToken,
   forgotPassword,
   resetPassword,
   updatePassword,
+
 };

@@ -92,18 +92,18 @@ app.use(bodyparser.json());
 app.use(cookieParser());
 // app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Session setup (for session-based auth)
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-  })
-);
+// // Session setup (for session-based auth)
+// app.use(
+//   session({
+//     // secret: process.env.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: false,
+//   })
+// );
 
-// Initialize Passport
-app.use(passport.initialize());
-app.use(passport.session());
+// // Initialize Passport
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 // Home route
 app.get("/", (req, res) => {
