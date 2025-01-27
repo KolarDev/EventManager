@@ -49,6 +49,8 @@ const sendErrorProd = (err, req, res) => {
   if (req.originalUrl.startsWith('/api')) {
     // A) Operational, trusted error: send message to client
     if (err.isOperational) {
+    console.error('ERROR 💥', err);
+
       return res.status(err.statusCode).json({
         status: err.status,
         message: err.message
@@ -93,8 +95,7 @@ module.exports = (err, req, res, next) => {
   } else if (process.env.NODE_ENV === 'production') {
     let error = { ...err };
     error.message = err.message;
-    error.isOperational = err.isOperational;
-
+   
     if (error.name === 'CastError') error = handleCastErrorDB(error);
     if (error.code === 11000) error = handleDuplicateFieldsDB(error);
     if (error.name === 'ValidationError')

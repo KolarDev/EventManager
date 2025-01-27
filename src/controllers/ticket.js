@@ -2,13 +2,14 @@ const User = require("./../models/user");
 const Event = require("./../models/event");
 const Ticket = require("./../models/ticket");
 const QRCode = require('qrcode');
+const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const paystack = require('../utils/paystack');
 
 
 // Purchase ticket
-const purchaseTicket = async (req, res, next) => {
-  try {
+const purchaseTicket = catchAsync( async (req, res, next) => {
+
     const { eventId, ticketType } = req.body;
 
     // Fetch event and ticket type
@@ -32,18 +33,12 @@ const purchaseTicket = async (req, res, next) => {
         status: "success", 
         authorization_url: payment.data.authorization_url 
     });
-  } catch (error) {
-    res.status(500).json({ 
-        status: "Failed!", 
-        message: "Error initiating ticket purchase !" 
-    });
-    // console.log(error);
-  }
-};
+  
+});
 
 // Verify payment and issue ticket
-const verifyPayment = async (req, res, next) => {
-  try {
+const verifyPayment = catchAsync( async (req, res, next) => {
+  
     const { reference, eventId, ticketType } = req.query;
 
     // Verify Paystack payment
@@ -73,19 +68,12 @@ const verifyPayment = async (req, res, next) => {
         status: "success", 
         ticket: issuedTicket 
     });
-    } catch (error) {
-    res.status(500).json({ 
-        status: "Failed!", 
-        message: "Error verifying your payment !" 
-    });
-    // console.log(error);
-    }
-};
+   
+});
 
 
 // Validate ticket using QR code
-const validateTicket = async (req, res, next) => {
-  try {
+const validateTicket = catchAsync( async (req, res, next) => {
     const { qrCode } = req.body;
 
     // Find ticket by QR code
@@ -106,14 +94,7 @@ const validateTicket = async (req, res, next) => {
         message: 'Ticket validated successfully', 
         ticket 
     });
-  } catch (error) {
-    res.status(500).json({ 
-        status: "Failed!", 
-        message: "Error validating ticket !" 
-    });
-    // console.log(error);
-  }
-};
+});
 
 
 module.exports = {

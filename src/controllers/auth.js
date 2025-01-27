@@ -1,11 +1,12 @@
 const bcrypt = require("bcryptjs");
 const User = require("./../models/user");
 const AppError = require("./../utils/appError");
+const catchAsync = require("./../utils/catchAsync");
 const jwt = require("jsonwebtoken");
 const Email = require("./../utils/notificator");
 
-const sendOtp = async (req, res, next) => {
-  try {
+const sendOtp = catchAsync( async (req, res, next) => {
+
     const userId = req.user._id;
     // generate OTP for user and save to the database
     const otp = generateOtp();
@@ -20,17 +21,10 @@ const sendOtp = async (req, res, next) => {
     if (!user) return next(new AppError("User not found!", 404));
 
     // await new Email(user).sendOtp();
-  } catch (error) {
-    res.status(500).json({
-      status: "success",
-      message: "Error sending otp !",
-    });
-    console.log(error);
-  }
-};
+});
 
 // Verify User Account
-const verifyOtp = async (req, res) => {
+const verifyOtp = catchAsync( async (req, res) => {
   const { otp } = req.body;
   const userId = req.user._id;
 
@@ -50,11 +44,11 @@ const verifyOtp = async (req, res) => {
     status: "success",
     message: "Account Verification Successful !",
   });
-};
+});
 
 // Forgot Password Functionality
-const forgotPassword = async (req, res, next) => {
-  try {
+const forgotPassword = catchAsync( async (req, res, next) => {
+ 
     // Get user based on valid email
     const { email } = req.body;
     const user = await User.findOne({ email });
@@ -80,18 +74,12 @@ const forgotPassword = async (req, res, next) => {
       status: "success",
       message: "Reset Password link sent to your email",
     });
-  } catch (error) {
-    res.status(500).json({
-      status: "failed !",
-      message: "Error processing your request !",
-    });
-    console.log(error);
-  }
-};
+ 
+});
 
 // Reset Password Functionality after forgot password
-const resetPassword = async (req, res, next) => {
-  try {
+const resetPassword = catchAsync( async (req, res, next) => {
+ 
     // 1. Get the user based on the token
     const hashedToken = crypto
       .createHash("sha256")
@@ -114,17 +102,11 @@ const resetPassword = async (req, res, next) => {
     // 3. Update changedPasswordAt property for the user
     // 4. Log the user in, send jwt
     sendToken(user, 200, res);
-  } catch (error) {
-    res.status(500).json({
-      status: "failed !",
-      message: "Error processing your request !",
-    });
-    console.log(error);
-  }
-};
+ 
+});
 
 // Password Update Functionality. Logged in users changing password
-const updatePassword = async (req, res, next) => {
+const updatePassword = catchAsync( async (req, res, next) => {
   // 1. Get the logged in user from collection
   const user = await User.findById(req.user.id).select("+password");
 
@@ -140,7 +122,7 @@ const updatePassword = async (req, res, next) => {
 
   // 4. Log the user in. Send jwt
   sendToken(user, 200, res);
-};
+});
 
 // Authenticating using OTP via email or phone
 

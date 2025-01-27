@@ -1,5 +1,6 @@
 const User = require("./../models/user");
 const Event = require("./../models/event");
+const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 
 // Create an event

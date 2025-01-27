@@ -8,7 +8,7 @@ const ticketSchema = mongoose.Schema({
   },
   event: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: "User",          
     required: true,
   },
   ticketType: {

@@ -1,13 +1,14 @@
 const User = require("./../models/user");
 const Event = require("./../models/event");
 const Cart = require("./../models/cart");
+const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 
 
 // Users add event to cart
-const addToCart = async (req, res) => {
+const addToCart = catchAsync( async (req, res) => {
   const { eventId } = req.params;
-  try {
+ 
     const cart = await Cart.findOne({ user: req.user.id });
 
     if (cart) {
@@ -22,17 +23,11 @@ const addToCart = async (req, res) => {
         cart,
       },
     });
-  } catch (error) {
-    res.status(500).json({
-      status: "Failed!",
-      message: "Error adding event to cart !",
-    });
-    //console.log(error);
-  }
-};
+ 
+});
 
-const removeFromCart = async (req, res) => {
-  try {
+const removeFromCart = catchAsync( async (req, res) => {
+ 
     const { eventId } = req.params;
 
     const cart = await Cart.findOne({ user: req.user.id });
@@ -56,14 +51,8 @@ const removeFromCart = async (req, res) => {
         cart,
       },
     });
-  } catch (error) {
-    res.status(500).json({
-      status: "Failed!",
-      message: "Error deleting event from your cart !",
-    });
-    //console.log(error);
-  }
-};
+  
+});
 
 module.exports = {
   addToCart,
