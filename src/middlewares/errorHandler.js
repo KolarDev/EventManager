@@ -35,6 +35,7 @@ const sendErrorDev = (err, req, res) => {
       message: err.message,
       stack: err.stack,
     });
+    console.log(err.isOperational);   
   } else {
     res.status(err.statusCode).json({
       title: "Something went wrong!",
@@ -87,18 +88,27 @@ module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || "Error";
 
-  if (process.env.NODE_ENV === "development") {
-    sendErrorDev(err, req, res);
-  } else if (process.env.NODE_ENV === "production") {
-    
-    let error = Object.assign({}, err);
+  let error = Object.assign(Object.create(Object.getPrototypeOf(err)), err);
+
+  console.log(error);
 
     if (error.name === "CastError") error = handleCastErrorDB(error);
     if (error.code === 11000) error = handleDuplicateFieldsDB(error);
     if (error.name === "ValidationError") error = handleValidatorErrorDB(error);
     if (error.name === "JsonWebTokenError") error = handleJwtErrorDB();
     if (error.name === "TokenExpiredError") error = handleJwtExpiredErrorDB();
+// 
+    console.log(error.isOperational);   
 
+
+  if (process.env.NODE_ENV === "development") {
+    sendErrorDev(err, req, res);
+    // sendErrorProd(error, req, res);
+
+    console.log(error.isOperational);   
+
+  } else if (process.env.NODE_ENV === "production") {
     sendErrorProd(error, req, res);
   }
 };
+    
