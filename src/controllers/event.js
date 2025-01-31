@@ -19,10 +19,43 @@ const getEventById = async (req, res) => {};
 // Delete event (event can only be deleted if the event date has passed or no one has bought ticket)✍
 const deleteEvent = async (req, res, next) => {};
 
+const getEventsAround = catchAsync(async (req, res, next) => {
+  const clientIp = req.ip === "::1" ? "8.8.8.8" : req.ip;
+
+  // Get user location from IP
+  const geoResponse = await axios.get(`http://ip-api.com/json/${clientIp}`);
+  const { lat, lon, status } = geoResponse.data;
+
+  if (status !== "success") {
+    return next(new AppError("Unable to determine location", 500));
+  }
+
+  // Fetch nearby events
+  const events = await Event.find({
+    location: {
+      $near: {
+        $geometry: {
+          type: "Point",
+          coordinates: [lon, lat],
+        },
+        $maxDistance: 5000, // 5km radius
+      },
+    },
+  });
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      events,
+    },
+  });
+});
+
 module.exports = {
   createEvent,
   updateEvent,
   getAllEvents,
   getEventById,
   deleteEvent,
+  getEventsAround,
 };

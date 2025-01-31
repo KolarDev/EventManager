@@ -29,10 +29,6 @@ const eventSchema = mongoose.Schema({
     required: true,
   },
   images: [String],
-  location: {
-    type: String,
-    required: true,
-  },
   ticketTypes: [
     {
       type: {
@@ -48,10 +44,22 @@ const eventSchema = mongoose.Schema({
         type: Number,
         required: true,
       },
-      sold: { 
-        type: Number, 
-        default: 0 
-      }
+      sold: {
+        type: Number,
+        default: 0,
+      },
+    },
+  ],
+  Location: [
+    {
+      type: {
+        type: String,
+        default: "Point",
+        enum: ["Point"],
+      },
+      coordinates: [Number],
+      address: String,
+      description: String,
     },
   ],
   createdAt: {
@@ -60,5 +68,8 @@ const eventSchema = mongoose.Schema({
   },
 });
 
+tourSchema.index({ Location: "2dsphere" });
+
 const Event = mongoose.model("Event", eventSchema);
+
 module.exports = Event;
