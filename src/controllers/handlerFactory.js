@@ -22,6 +22,7 @@ exports.getCategories = Model =>
 
         // Check events length
         if (events.length) {
+            responseData.data.categories = undefined;
             responseData.data.events = events;
         }
 

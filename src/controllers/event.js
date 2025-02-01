@@ -177,6 +177,7 @@ module.exports = {
   createEvent,
   updateEvent,
   getAllEvents,
+  getCategories,
   getEventById,
   deleteEvent,
 };
