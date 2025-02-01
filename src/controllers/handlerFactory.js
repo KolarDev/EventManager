@@ -3,24 +3,29 @@ const AppError = require('../utils/appError');
 const APIFeatures = require('../utils/apiFeatures');
 
 
-exports.getAll = Model => catchAsync(async (req, res, next) => {
-    let filter = {};
+exports.getCategories = Model =>
+    catchAsync(async (req, res, next) => {
 
-    const features = new APIFeatures(Model.find(filter), req.query)
-        .filter()
-        .sort()
-        .limitFields()
-        .paginate();
-    
-    const docs = await features.query;
+        const categories = await Model.distinct('category');
 
+        let events = [];
+        if (req.query.category) {
+            const category = new APIFeatures(Model.find({ category: req.query.category }), req.query)
+                .sort()
+                .limitFields() 
+                .paginate();
 
-    // ======== RESPONSE
-    res.status(200).json({
-        status: 'success',
-        results: docs.length,
-        data: {
-            data: docs
+            events = await category.query;
         }
-    });
-})
+
+        const responseData = { status: 'success', data: { categories } };
+
+        // Check events length
+        if (events.length) {
+            responseData.data.events = events;
+        }
+
+        res.status(200).json(responseData);
+    })
+
+
