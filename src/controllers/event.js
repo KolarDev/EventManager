@@ -1,5 +1,6 @@
 const Event = require("./../models/event");
 const AppError = require("./../utils/appError");
+const factory = require("./handlerFactory");
 
 // Create an event
 const createEvent = async (req, res, next) => {
@@ -100,6 +101,9 @@ const getAllEvents = async (req, res) => {
 
 
 };
+
+// Get all categories
+const getCategories = factory.getCategories(Event);
 
 // Get an event by ID
 const getEventById = async (req, res, next) => {
