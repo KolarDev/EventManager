@@ -27,6 +27,6 @@ exports.getCategories = Model =>
         }
 
         res.status(200).json(responseData);
-    })
+    });
 
 
