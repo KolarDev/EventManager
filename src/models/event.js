@@ -68,7 +68,7 @@ const eventSchema = mongoose.Schema({
   },
 });
 
-tourSchema.index({ Location: "2dsphere" });
+eventSchema.index({ Location: "2dsphere" });
 
 const Event = mongoose.model("Event", eventSchema);
 
