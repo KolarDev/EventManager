@@ -9,17 +9,26 @@ const {
   getEventById,
   deleteEvent,
   getEventsAround,
+  getUpcomingEvents,
+
+  getEventByCategory,
 } = require("./../controllers/event");
 
 const router = express.Router();
 
 router.use(protectRoute);
-router.post("/", createEvent);
-router.put("/:eventId", updateEvent);
-// getting categories
-router.get("/categories", getCategories);
-router.get("/:eventId", getEventById);
-router.delete("/:eventId", deleteEvent);
+router.post("/create-event", createEvent);
 
+router.get("/all-events", getAllEvents);
+router.get("/events-around", getEventsAround);
+router.get("/upcoming", getUpcomingEvents);
+router.get("/categories", getCategories);
+router.get("/categories/:category", getEventByCategory);
+
+router
+  .route("/:eventId")
+  .get(getEventById)
+  .patch(updateEvent)
+  .delete(deleteEvent);
 
 module.exports = router;

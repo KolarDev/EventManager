@@ -1,0 +1,221 @@
+[
+  {
+    "creator": "63f2c99f9d4d8e4b5b5efc51",
+    "organizers": ["63f2c99f9d4d8e4b5b5efc52", "63f2c99f9d4d8e4b5b5efc53"],
+    "title": "Annual Music Concert",
+    "eventDate": "2025-03-15T18:30:00Z",
+    "category": "Concerts",
+    "description": "Join us for a night of incredible music.",
+    "images": ["concert1.jpg", "concert2.jpg"],
+    "ticketTypes": [
+      { "type": "VIP", "price": 150, "quantity": 50 },
+      { "type": "Standard", "price": 75, "quantity": 200 }
+    ],
+    "Location": {
+      "type": "Point",
+      "coordinates": [-74.006, 40.7128],
+      "address": "Madison Square Garden, NY",
+      "description": "Main venue for the event"
+    },
+    "createdAt": "2025-01-01T12:00:00Z"
+  },
+  {
+    "creator": "63f2c99f9d4d8e4b5b5efc54",
+    "organizers": ["63f2c99f9d4d8e4b5b5efc55"],
+    "title": "Wedding Ceremony",
+    "eventDate": "2025-05-20T14:00:00Z",
+    "category": "Wedding",
+    "description": "A beautiful wedding ceremony by the beach.",
+    "images": ["wedding1.jpg"],
+    "ticketTypes": [{ "type": "Standard", "price": 0, "quantity": 100 }],
+    "Location": {
+      "type": "Point",
+      "coordinates": [-118.2437, 34.0522],
+      "address": "Santa Monica Beach, CA",
+      "description": "Beachside venue"
+    },
+    "createdAt": "2025-01-15T10:00:00Z"
+  },
+  {
+    "creator": "63f2c99f9d4d8e4b5b5efc56",
+    "organizers": [],
+    "title": "Tech Podcast Event",
+    "eventDate": "2025-04-10T10:00:00Z",
+    "category": "Podcast",
+    "description": "Exploring the future of technology.",
+    "images": ["podcast1.jpg"],
+    "ticketTypes": [{ "type": "Early Bird", "price": 50, "quantity": 100 }],
+    "Location": {
+      "type": "Point",
+      "coordinates": [2.3522, 48.8566],
+      "address": "Paris Tech Hub, France",
+      "description": "Innovation center in Paris"
+    },
+    "createdAt": "2025-01-18T15:30:00Z"
+  },
+  {
+    "creator": "63f2c99f9d4d8e4b5b5efc57",
+    "organizers": ["63f2c99f9d4d8e4b5b5efc58"],
+    "title": "Rock Concert",
+    "eventDate": "2025-07-22T19:00:00Z",
+    "category": "Concerts",
+    "description": "Experience a thrilling rock performance.",
+    "images": ["rock1.jpg", "rock2.jpg"],
+    "ticketTypes": [
+      { "type": "VIP", "price": 200, "quantity": 100 },
+      { "type": "Standard", "price": 100, "quantity": 500 }
+    ],
+    "Location": {
+      "type": "Point",
+      "coordinates": [-0.1276, 51.5072],
+      "address": "London Arena, UK",
+      "description": "Central venue in London"
+    },
+    "createdAt": "2025-02-05T09:00:00Z"
+  },
+  {
+    "creator": "63f2c99f9d4d8e4b5b5efc59",
+    "organizers": ["63f2c99f9d4d8e4b5b5efc60", "63f2c99f9d4d8e4b5b5efc61"],
+    "title": "Art Exhibition",
+    "eventDate": "2025-09-10T11:00:00Z",
+    "category": "Podcast",
+    "description": "Showcasing contemporary art pieces.",
+    "images": ["art1.jpg"],
+    "ticketTypes": [{ "type": "Standard", "price": 30, "quantity": 300 }],
+    "Location": {
+      "type": "Point",
+      "coordinates": [13.405, 52.52],
+      "address": "Berlin Art Gallery, Germany",
+      "description": "Premier gallery in Berlin"
+    },
+    "createdAt": "2025-02-20T08:00:00Z"
+  },
+  {
+    "creator": "63f2c99f9d4d8e4b5b5efc62",
+    "organizers": ["63f2c99f9d4d8e4b5b5efc63"],
+    "title": "Wedding Expo",
+    "eventDate": "2025-06-17T15:00:00Z",
+    "category": "Wedding",
+    "description": "Everything you need for your dream wedding.",
+    "images": ["expo1.jpg"],
+    "ticketTypes": [{ "type": "Early Bird", "price": 20, "quantity": 100 }],
+    "Location": {
+      "type": "Point",
+      "coordinates": [37.7749, -122.4194],
+      "address": "San Francisco Convention Center, CA",
+      "description": "Modern venue for large events"
+    },
+    "createdAt": "2025-03-01T14:30:00Z"
+  },
+  {
+    "creator": "63f2c99f9d4d8e4b5b5efc64",
+    "organizers": ["63f2c99f9d4d8e4b5b5efc65"],
+    "title": "Tech Workshop",
+    "eventDate": "2025-08-05T09:00:00Z",
+    "category": "Podcast",
+    "description": "Hands-on workshop on AI technologies.",
+    "images": ["workshop1.jpg"],
+    "ticketTypes": [{ "type": "VIP", "price": 500, "quantity": 50 }],
+    "Location": {
+      "type": "Point",
+      "coordinates": [144.9631, -37.8136],
+      "address": "Melbourne Tech Park, Australia",
+      "description": "Leading tech center in Australia"
+    },
+    "createdAt": "2025-03-12T11:00:00Z"
+  },
+  {
+    "creator": "64f2d99f1e8d4a4b5a5efc01",
+    "organizers": ["64f2d99f1e8d4a4b5a5efc02"],
+    "title": "Lagos Fashion Week",
+    "eventDate": "2025-11-12T10:00:00Z",
+    "category": "Concerts",
+    "description": "An annual fashion event showcasing the best of Nigerian fashion.",
+    "images": ["lagos_fashion1.jpg"],
+    "ticketTypes": [
+      { "type": "VIP", "price": 50000, "quantity": 100 },
+      { "type": "Standard", "price": 20000, "quantity": 500 }
+    ],
+    "Location": {
+      "type": "Point",
+      "coordinates": [3.3792, 6.5244],
+      "address": "Eko Hotel and Suites, Lagos",
+      "description": "Main venue for Lagos Fashion Week"
+    },
+    "createdAt": "2025-01-01T12:00:00Z"
+  },
+  {
+    "creator": "64f2d99f1e8d4a4b5a5efc03",
+    "organizers": ["64f2d99f1e8d4a4b5a5efc04"],
+    "title": "Abuja Music Festival",
+    "eventDate": "2025-08-15T18:00:00Z",
+    "category": "Concerts",
+    "description": "A celebration of Nigerian music with top artists performing.",
+    "images": ["abuja_music1.jpg"],
+    "ticketTypes": [
+      { "type": "VIP", "price": 100000, "quantity": 50 },
+      { "type": "Standard", "price": 30000, "quantity": 200 }
+    ],
+    "Location": {
+      "type": "Point",
+      "coordinates": [7.4951, 9.0578],
+      "address": "Eagle Square, Abuja",
+      "description": "Outdoor venue for music performances"
+    },
+    "createdAt": "2025-02-10T09:00:00Z"
+  },
+  {
+    "creator": "64f2d99f1e8d4a4b5a5efc05",
+    "organizers": ["64f2d99f1e8d4a4b5a5efc06"],
+    "title": "Port Harcourt Tech Conference",
+    "eventDate": "2025-06-05T09:00:00Z",
+    "category": "Podcast",
+    "description": "A conference for tech enthusiasts and professionals.",
+    "images": ["ph_tech1.jpg"],
+    "ticketTypes": [{ "type": "Early Bird", "price": 50000, "quantity": 150 }],
+    "Location": {
+      "type": "Point",
+      "coordinates": [7.0134, 4.8156],
+      "address": "Port Harcourt International Conference Centre",
+      "description": "State-of-the-art venue for tech events"
+    },
+    "createdAt": "2025-03-05T10:00:00Z"
+  },
+  {
+    "creator": "64f2d99f1e8d4a4b5a5efc07",
+    "organizers": [],
+    "title": "Enugu Wedding Expo",
+    "eventDate": "2025-10-20T11:00:00Z",
+    "category": "Wedding",
+    "description": "A gathering of wedding vendors and couples planning their big day.",
+    "images": ["enugu_wedding1.jpg"],
+    "ticketTypes": [{ "type": "Standard", "price": 15000, "quantity": 300 }],
+    "Location": {
+      "type": "Point",
+      "coordinates": [7.5174, 6.4249],
+      "address": "Polo Park Mall, Enugu",
+      "description": "Premier event space in Enugu"
+    },
+    "createdAt": "2025-04-02T14:00:00Z"
+  },
+  {
+    "creator": "64f2d99f1e8d4a4b5a5efc08",
+    "organizers": ["64f2d99f1e8d4a4b5a5efc09"],
+    "title": "Ibadan Arts Festival",
+    "eventDate": "2025-09-10T16:00:00Z",
+    "category": "Podcast",
+    "description": "An exhibition of traditional and contemporary Nigerian art.",
+    "images": ["ibadan_arts1.jpg"],
+    "ticketTypes": [
+      { "type": "VIP", "price": 40000, "quantity": 50 },
+      { "type": "Standard", "price": 20000, "quantity": 500 }
+    ],
+    "Location": {
+      "type": "Point",
+      "coordinates": [3.8791, 7.3775],
+      "address": "Ibadan Cultural Centre",
+      "description": "Famous art and cultural venue in Ibadan"
+    },
+    "createdAt": "2025-05-18T11:00:00Z"
+  }
+]

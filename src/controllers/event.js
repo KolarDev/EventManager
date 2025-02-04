@@ -1,119 +1,126 @@
 const Event = require("./../models/event");
+const axios = require("axios");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const factory = require("./handlerFactory");
 
 // Create an event
 const createEvent = catchAsync(async (req, res, next) => {
-
   // GET USERID FROM REQ
   const { id } = req.user;
 
-  const {
-    title, eventDate, category, description, location,
-    ticketTypes
-  } = req.body;
+  const { title, eventDate, category, description, Location, ticketTypes } =
+    req.body;
 
-    // CHECK IF DATE IS VALID
-    const currentTimestamp = Date.now(); // Current timestamp in milliseconds
+  // CHECK IF DATE IS VALID
+  const currentTimestamp = Date.now(); // Current timestamp in milliseconds
 
-    // Convert the input date string to a timestamp in milliseconds
-    const inputTimestamp = new Date(eventDate).getTime();
-    // Compare the two dates
-    if (inputTimestamp < currentTimestamp) {
-      return next(
-        new AppError("Date has passed, choose a valid date", 400)
-      );
-    }
+  // Convert the input date string to a timestamp in milliseconds
+  const inputTimestamp = new Date(eventDate).getTime();
+  // Compare the two dates
+  if (inputTimestamp < currentTimestamp) {
+    return next(new AppError("Date has passed, choose a valid date", 400));
+  }
 
-    // CREATE NEW EVENT
-    const newEvent = await Event.create({
-      creator: id,
-      organizers: [id],
-      title,
-      eventDate,
-      category,
-      description,
-      location,
-      ticketTypes
-    });
+  // CREATE NEW EVENT
+  const newEvent = await Event.create({
+    creator: id,
+    organizers: [id],
+    title,
+    eventDate,
+    category,
+    description,
+    Location,
+    ticketTypes,
+  });
 
-    res.status(201).json({
-      status: "success",
-      data: {
-        newEvent
-      }
-    });
+  res.status(201).json({
+    status: "success",
+    data: {
+      newEvent,
+    },
+  });
 });
 
 // Update event partially (PATCH) only event creator and organisers can update event
 const updateEvent = catchAsync(async (req, res, next) => {
   const { eventId } = req.params;
 
-    const event = await Event.findById(eventId)
+  const event = await Event.findById(eventId);
 
-    // CHECK IF EVENT EXISTS
-    if (!event) {
-      return next(new AppError(
-        "Event not found", 404
-      ))
-    }
-    // CHECK IF USER IS A CREATOR OR ORGANIZER
-    const userId = req.user.id
-    const isAuthorized = event.creator === userId || event.organizers.includes(userId)
+  // CHECK IF EVENT EXISTS
+  if (!event) {
+    return next(new AppError("Event not found", 404));
+  }
+  // CHECK IF USER IS A CREATOR OR ORGANIZER
+  const userId = req.user.id;
+  const isAuthorized =
+    event.creator === userId || event.organizers.includes(userId);
 
-    if (!isAuthorized) {
-      return next(new AppError(
-        "No access to update", 403
-      ));
-    }
+  if (!isAuthorized) {
+    return next(new AppError("No access to update", 403));
+  }
 
-    await Event.findByIdAndUpdate(
-      eventId, { $set: req.body }, { new: true }
-    );
+  await Event.findByIdAndUpdate(eventId, { $set: req.body }, { new: true });
 
-    res.status(200).json({
-      status: "Success",
-      message: 'Event updated successfully!',
-      event
-    });
+  res.status(200).json({
+    status: "Success",
+    message: "Event updated successfully!",
+    event,
+  });
 });
 
 // Get all events
 // Option for advanced fitering by categories
-const getAllEvents = catchAsync(async (req, res) => { 
+const getAllEvents = catchAsync(async (req, res) => {
   const events = await Event.find();
 
   res.status(200).json({
     status: "success",
     data: {
-      events
-    }
+      events,
+    },
   });
 });
 
 // Get all categories
 const getCategories = factory.getCategories(Event);
 
+const getEventByCategory = catchAsync(async (req, res, next) => {
+  const { category } = req.params;
+
+  // Find events based on category
+  const events = await Event.find({ category });
+
+  if (!events) {
+    return next(new AppError("No event found for this category", 404));
+  }
+
+  res.status(200).json({
+    status: "Success",
+    data: {
+      events,
+    },
+  });
+});
+
 // Get an event by ID
 const getEventById = catchAsync(async (req, res, next) => {
   const { eventId } = req.params;
 
-    // FIND EVENT BY ID
-    const event = await Event.findById(eventId);
+  // FIND EVENT BY ID
+  const event = await Event.findById(eventId);
 
-    if (!event) {
-      return next(new AppError(
-        "Event not found", 404
-      ))
-    }
+  if (!event) {
+    return next(new AppError("Event not found", 404));
+  }
 
-    res.status(200).json({
-      status: "Success",
-      data: {
-        event
-      }
-    });
+  res.status(200).json({
+    status: "Success",
+    data: {
+      event,
+    },
+  });
 });
 
 // Delete event (event can only be deleted if the event date has passed or no one has bought ticket)✍
@@ -123,36 +130,39 @@ const deleteEvent = catchAsync(async (req, res, next) => {
   const event = await Event.findById(eventId);
   // CHECK IF EVENT EXISTS
   if (!event) {
-    return next(new AppError("Event doesnt exist", 404))
+    return next(new AppError("Event doesnt exist", 404));
   }
   // CHECK IF USER IS A CREATOR OR ORGANIZER
-  const userId = req.user.id
-  const isAuthorized = event.creator === userId || event.organizers.includes(userId)
+  const userId = req.user.id;
+  const isAuthorized =
+    event.creator === userId || event.organizers.includes(userId);
   if (!isAuthorized) {
-    return next(new AppError("Unauthorized to delete", 403))
+    return next(new AppError("Unauthorized to delete", 403));
   }
 
   // CHECK IF TODAY'S DATE IS GREATER THAN EVENT'S DATE
   const currentDate = new Date();
 
   if (currentDate < event.Date) {
-    return next(new AppError(
-      "Cannot delete event. Event hasnt been done.", 400
-    ));
+    return next(
+      new AppError("Cannot delete event. Event hasnt been done.", 400)
+    );
   }
 
   await Event.findByIdAndDelete(eventId);
   res.status(200).json({
     status: "Success",
-    message: "Event deleted successfully"
+    message: "Event deleted successfully",
   });
 });
 
 const getEventsAround = catchAsync(async (req, res, next) => {
+  // Get user ip address
   const clientIp = req.ip === "::1" ? "8.8.8.8" : req.ip;
 
   // Get user location from IP
   const geoResponse = await axios.get(`http://ip-api.com/json/${clientIp}`);
+  console.log(geoResponse);
   const { lat, lon, status } = geoResponse.data;
 
   if (status !== "success") {
@@ -161,7 +171,7 @@ const getEventsAround = catchAsync(async (req, res, next) => {
 
   // Fetch nearby events
   const events = await Event.find({
-    location: {
+    Location: {
       $near: {
         $geometry: {
           type: "Point",
@@ -172,10 +182,38 @@ const getEventsAround = catchAsync(async (req, res, next) => {
     },
   });
 
+  if (!events) {
+    return next(new AppError("No event around your location", 404));
+  }
+
   res.status(200).json({
     status: "success",
     data: {
       events,
+    },
+  });
+});
+
+const getUpcomingEvents = catchAsync(async (req, res, next) => {
+  // Get the current date
+  const currentDate = new Date();
+
+  // Calculate the date one month from now
+  const oneMonthFromNow = new Date(currentDate);
+  oneMonthFromNow.setMonth(currentDate.getMonth() + 1);
+
+  // Fetch events that are less than a month from now
+  const upcomingEvents = await Event.find({
+    date: { $lt: oneMonthFromNow },
+  });
+
+  if (!upcomingEvents || upcomingEvents.length === 0) {
+    return next(new AppError("No events found within the next month", 404));
+  }
+  res.status(200).json({
+    status: "success",
+    data: {
+      events: upcomingEvents,
     },
   });
 });
@@ -188,4 +226,6 @@ module.exports = {
   getEventById,
   deleteEvent,
   getEventsAround,
+  getUpcomingEvents,
+  getEventByCategory,
 };

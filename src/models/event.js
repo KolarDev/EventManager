@@ -50,18 +50,20 @@ const eventSchema = mongoose.Schema({
       },
     },
   ],
-  Location: [
-    {
-      type: {
-        type: String,
-        default: "Point",
-        enum: ["Point"],
-      },
-      coordinates: [Number],
-      address: String,
-      description: String,
+  Location: {
+    type: {
+      type: String,
+      default: "Point",
+      enum: ["Point"],
+      required: true,
     },
-  ],
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
+    address: String,
+    description: String,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

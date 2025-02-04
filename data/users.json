@@ -1,0 +1,142 @@
+[
+  {
+    "fullname": "John Doe",
+    "email": "johndoe1@gmail.com",
+    "phone": 2347012345671,
+    "password": "test1234",
+    "passwordConfirm": "test1234"
+  },
+  {
+    "fullname": "Jane Smith",
+    "email": "janesmith2@gmail.com",
+    "phone": 2347012345672,
+    "password": "test1234",
+    "passwordConfirm": "test1234"
+  },
+  {
+    "fullname": "Michael Johnson",
+    "email": "michaelj3@gmail.com",
+    "phone": 2347012345673,
+    "password": "test1234",
+    "passwordConfirm": "test1234"
+  },
+  {
+    "fullname": "Patricia Brown",
+    "email": "patbrown4@gmail.com",
+    "phone": 2347012345674,
+    "password": "test1234",
+    "passwordConfirm": "test1234"
+  },
+  {
+    "fullname": "Chris Evans",
+    "email": "chrisevans5@gmail.com",
+    "phone": 2347012345675,
+    "password": "test1234",
+    "passwordConfirm": "test1234"
+  },
+  {
+    "fullname": "Sandra Adams",
+    "email": "sandradams6@gmail.com",
+    "phone": 2347012345676,
+    "password": "test1234",
+    "passwordConfirm": "test1234"
+  },
+  {
+    "fullname": "David White",
+    "email": "davidwhite7@gmail.com",
+    "phone": 2347012345677,
+    "password": "test1234",
+    "passwordConfirm": "test1234"
+  },
+  {
+    "fullname": "Nancy Drew",
+    "email": "nancydrew8@gmail.com",
+    "phone": 2347012345678,
+    "password": "test1234",
+    "passwordConfirm": "test1234"
+  },
+  {
+    "fullname": "Samuel Green",
+    "email": "samuelgreen9@gmail.com",
+    "phone": 2347012345679,
+    "password": "test1234",
+    "passwordConfirm": "test1234"
+  },
+  {
+    "fullname": "Linda Gray",
+    "email": "lindagray10@gmail.com",
+    "phone": 2347012345680,
+    "password": "test1234",
+    "passwordConfirm": "test1234"
+  },
+  {
+    "fullname": "Henry Miller",
+    "email": "henrymiller11@gmail.com",
+    "phone": 2347012345681,
+    "password": "test1234",
+    "passwordConfirm": "test1234"
+  },
+  {
+    "fullname": "Martha Stewart",
+    "email": "marthastewart12@gmail.com",
+    "phone": 2347012345682,
+    "password": "test1234",
+    "passwordConfirm": "test1234"
+  },
+  {
+    "fullname": "Paul Walker",
+    "email": "paulwalker13@gmail.com",
+    "phone": 2347012345683,
+    "password": "test1234",
+    "passwordConfirm": "test1234"
+  },
+  {
+    "fullname": "Susan Richards",
+    "email": "susanrichards14@gmail.com",
+    "phone": 2347012345684,
+    "password": "test1234",
+    "passwordConfirm": "test1234"
+  },
+  {
+    "fullname": "Tom Hardy",
+    "email": "tomhardy15@gmail.com",
+    "phone": 2347012345685,
+    "password": "test1234",
+    "passwordConfirm": "test1234"
+  },
+  {
+    "fullname": "Diana Prince",
+    "email": "dianaprince16@gmail.com",
+    "phone": 2347012345686,
+    "password": "test1234",
+    "passwordConfirm": "test1234"
+  },
+  {
+    "fullname": "Bruce Wayne",
+    "email": "brucewayne17@gmail.com",
+    "phone": 2347012345687,
+    "password": "test1234",
+    "passwordConfirm": "test1234"
+  },
+  {
+    "fullname": "Clark Kent",
+    "email": "clarkkent18@gmail.com",
+    "phone": 2347012345688,
+    "password": "test1234",
+    "passwordConfirm": "test1234"
+  },
+  {
+    "fullname": "Lois Lane",
+    "email": "loislane19@gmail.com",
+    "phone": 2347012345689,
+    "password": "test1234",
+    "passwordConfirm": "test1234"
+  },
+  {
+    "fullname": "Peter Parker",
+    "email": "peterparker20@gmail.com",
+    "phone": 2347012345690,
+    "password": "test1234",
+    "passwordConfirm": "test1234"
+  }
+]
