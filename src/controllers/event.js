@@ -4,7 +4,7 @@ const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const factory = require("./handlerFactory");
 
-// Create an event
+// =============== CREATE EVENT
 const createEvent = catchAsync(async (req, res, next) => {
   // GET USERID FROM REQ
   const { id } = req.user;
@@ -42,7 +42,7 @@ const createEvent = catchAsync(async (req, res, next) => {
   });
 });
 
-// Update event partially (PATCH) only event creator and organisers can update event
+// ============== UPDATE EVENT PARTIALLY (PATCH) only event creator and organisers can update event
 const updateEvent = catchAsync(async (req, res, next) => {
   const { eventId } = req.params;
 
@@ -70,12 +70,12 @@ const updateEvent = catchAsync(async (req, res, next) => {
   });
 });
 
-// Get all events
+// ============ GET ALL EVENTS
 // Option for advanced fitering by categories
 const getAllEvents = catchAsync(async (req, res) => {
   const events = await Event.find();
 
-  res.status(200).json({
+  res.status(200).json({ 
     status: "success",
     data: {
       events,
@@ -83,9 +83,10 @@ const getAllEvents = catchAsync(async (req, res) => {
   });
 });
 
-// Get all categories
+// ========== GET ALL CATEGORIES or CATEGORY
 const getCategories = factory.getCategories(Event);
 
+// ======
 const getEventByCategory = catchAsync(async (req, res, next) => {
   const { category } = req.params;
 
@@ -104,7 +105,7 @@ const getEventByCategory = catchAsync(async (req, res, next) => {
   });
 });
 
-// Get an event by ID
+// ============== GET EVENT BY ID
 const getEventById = catchAsync(async (req, res, next) => {
   const { eventId } = req.params;
 
@@ -123,7 +124,7 @@ const getEventById = catchAsync(async (req, res, next) => {
   });
 });
 
-// Delete event (event can only be deleted if the event date has passed or no one has bought ticket)✍
+// ============== DELETE EVENT (event can only be deleted if the event date has passed or no one has bought ticket)✍
 const deleteEvent = catchAsync(async (req, res, next) => {
   const { eventId } = req.params;
 
@@ -156,6 +157,7 @@ const deleteEvent = catchAsync(async (req, res, next) => {
   });
 });
 
+// ============== GET EVENTS AROUND USER LOCATION
 const getEventsAround = catchAsync(async (req, res, next) => {
   // Get user ip address
   const clientIp = req.ip === "::1" ? "8.8.8.8" : req.ip;
@@ -194,6 +196,7 @@ const getEventsAround = catchAsync(async (req, res, next) => {
   });
 });
 
+// ============== GET UPCOMING EVENTS
 const getUpcomingEvents = catchAsync(async (req, res, next) => {
   // Get the current date
   const currentDate = new Date();
