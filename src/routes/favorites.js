@@ -1,13 +1,12 @@
 const express = require("express");
 const { protectRoute, restrictTo } = require("../middlewares/protect");
-const { addToCart, removeFromCart } = require("./../controllers/cart");
-const { addToFavorites } = require("../controllers/favorites");
+const { addToFavorites, removeFromFavorites } = require("../controllers/favorites");
 
 const router = express.Router();
 
 router.use(protectRoute);
 
 router.post("/add/:eventId", addToFavorites);
-router.delete("/remove/:eventId", removeToFavorites);
+router.delete("/remove/:eventId", removeFromFavorites);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const User = require("./../models/user");
 const Event = require("./../models/event");
-const Cart = require("./../models/cart");
+const { Cart } = require("./../models/cart");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 
@@ -14,7 +14,7 @@ const addToCart = catchAsync(async (req, res) => {
 
   if (!cart) {
     // ADD USER AND EVENT TO CART
-    await Cart.create({ user: req.user.id, events: [eventId] });
+    await Cart.create({ user: userId, events: [eventId] });
   } else {
     // CHECK IF EVENT IS ALREADY IN CART
     if (!cart.events.includes(eventId)) {
