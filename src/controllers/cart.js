@@ -46,6 +46,7 @@ const removeFromCart = catchAsync(async (req, res) => {
   const { eventId } = req.params;
   const userId = req.user.id
   const cart = await Cart.findOne({ user: userId });
+  
 
   if (cart) {
     // CHECK IF EVENT EXISTS
