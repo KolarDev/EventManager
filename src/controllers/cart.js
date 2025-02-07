@@ -21,16 +21,16 @@ const addToCart = catchAsync(async (req, res) => {
       cart.events.push(eventId);
       await cart.save();
     } else {
-      return res.status(200).json({ 
-        status: "success", 
-        message: "Event is already in the cart" 
+      return res.status(200).json({
+        status: "success",
+        message: "Event is already in the cart"
       });
     }
   }
 
   cart = await Cart.findOne({ user: userId });
 
-  
+
   res.status(200).json({
     status: "success",
     data: {
@@ -40,29 +40,38 @@ const addToCart = catchAsync(async (req, res) => {
 
 });
 
+
+// ========= USERS REMOVE EVENTS FROM CART 
 const removeFromCart = catchAsync(async (req, res) => {
-
   const { eventId } = req.params;
-
-  const cart = await Cart.findOne({ user: req.user.id });
+  const userId = req.user.id
+  const cart = await Cart.findOne({ user: userId });
 
   if (cart) {
-    // Find the array index of the eventId
-    const eventIndex = cart.events.findIndex((item) => item === eventId);
-    // if the event is present, remove it from the array of events in the cart
-    if (eventIndex === -1) {
-      cart.events.splice(eventIndex, 1);
+    // CHECK IF EVENT EXISTS
+    const checkEventExists = cart.events.map(objectId => objectId.toString()).includes(eventId);
+
+    if(checkEventExists) {
+      // ==== FIND AND COMPARE EVENTID
+      const eventIndex = cart.events.findIndex((item) => item.toString() === eventId);
+
+      if (eventIndex !== -1) {
+        cart.events.splice(eventIndex, 1);
+        await cart.save();
+      }
     } else {
-      return new AppError("event is not in your cart!", 401);
+      // ERROR IF EVENTS DOESNT EXIST IN CART
+      throw new AppError("Event isnt in cart", 401);
     }
   } else {
-    return new AppError("You don't have event in your cart", 401);
+    return new AppError("You don't have a cart", 404);
   }
 
+  const updatedCart = await Cart.findOne({ user: userId })
   res.status(200).json({
     status: "success",
     data: {
-      cart,
+      updatedCart,
     },
   });
 
