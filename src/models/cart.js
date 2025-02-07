@@ -18,6 +18,7 @@ const cartSchema = mongoose.Schema({
 
 const Cart = mongoose.model("Cart", cartSchema);
 
+// ================== FAVORITES SCHEMA
 const favoriteSchema = mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
