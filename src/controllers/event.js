@@ -203,20 +203,35 @@ const getUpcomingEvents = catchAsync(async (req, res, next) => {
 
   // Calculate the date one month from now
   const oneMonthFromNow = new Date(currentDate);
-  oneMonthFromNow.setMonth(currentDate.getMonth() + 1);
+  oneMonthFromNow.setDate(1);
+  oneMonthFromNow.setMonth(currentDate.getMonth() + 2);
 
   // Fetch events that are less than a month from now
   const upcomingEvents = await Event.find({
-    date: { $lt: oneMonthFromNow },
+    eventDate: {
+      $gt: currentDate,
+      $lt: oneMonthFromNow,
+    },
   });
+
+  console.log(upcomingEvents)
 
   if (!upcomingEvents || upcomingEvents.length === 0) {
     return next(new AppError("No events found within the next month", 404));
   }
+
+  const upcomingEventsInfo = upcomingEvents.map(event => {
+    return {
+      date: event.eventDate,
+      title: event.title,
+      address: event.Location.address,
+    }
+  })
+
   res.status(200).json({
     status: "success",
     data: {
-      events: upcomingEvents,
+      events: upcomingEventsInfo
     },
   });
 });
