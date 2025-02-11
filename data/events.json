@@ -24,7 +24,7 @@
     "organizers": ["63f2c99f9d4d8e4b5b5efc55"],
     "title": "Wedding Ceremony",
     "eventDate": "2025-05-20T14:00:00Z",
-    "category": "Wedding",
+    "category": "Wedding Venues",
     "description": "A beautiful wedding ceremony by the beach.",
     "images": ["wedding1.jpg"],
     "ticketTypes": [{ "type": "Standard", "price": 0, "quantity": 100 }],
