@@ -1,32 +1,31 @@
-const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/appError');
-const APIFeatures = require('../utils/apiFeatures');
+const catchAsync = require("../utils/catchAsync");
+const AppError = require("../utils/appError");
+const APIFeatures = require("../utils/apiFeatures");
 
+exports.getCategories = (Model) =>
+  catchAsync(async (req, res, next) => {
+    const categories = await Model.distinct("category");
 
-exports.getCategories = Model =>
-    catchAsync(async (req, res, next) => {
+    let events = [];
+    if (req.query.category) {
+      const category = new APIFeatures(
+        Model.find({ category: req.query.category }),
+        req.query
+      )
+        .sort()
+        .limitFields()
+        .paginate();
 
-        const categories = await Model.distinct('category');
+      events = await category.query;
+    }
 
-        let events = [];
-        if (req.query.category) {
-            const category = new APIFeatures(Model.find({ category: req.query.category }), req.query)
-                .sort()
-                .limitFields() 
-                .paginate();
+    const responseData = { status: "success", data: { categories } };
 
-            events = await category.query;
-        }
+    // Check events length
+    if (events.length) {
+      responseData.data.categories = undefined;
+      responseData.data.events = events;
+    }
 
-        const responseData = { status: 'success', data: { categories } };
-
-        // Check events length
-        if (events.length) {
-            responseData.data.categories = undefined;
-            responseData.data.events = events;
-        }
-
-        res.status(200).json(responseData);
-    });
-
-
+    res.status(200).json(responseData);
+  });
