@@ -1,5 +1,181 @@
 [
   {
+    "creator": "65a123456789abcd12345678",
+    "title": "Lagos Football League Finals",
+    "eventDate": "2025-03-15",
+    "category": "Turfs ground",
+    "description": "Experience the most thrilling football league final in Lagos!",
+    "images": ["https://example.com/event1.jpg"],
+    "ticketTypes": [
+      {
+        "type": "VIP",
+        "price": 5000,
+        "quantity": 50
+      },
+      {
+        "type": "Standard",
+        "price": 2000,
+        "quantity": 200
+      }
+    ],
+    "Location": {
+      "coordinates": [3.3792, 6.5244],
+      "address": "Teslim Balogun Stadium, Lagos",
+      "description": "A well-equipped football turf in Lagos."
+    }
+  },
+  {
+    "creator": "65a123456789abcd12345679",
+    "title": "Abuja Luxury Wedding Expo",
+    "eventDate": "2025-04-10",
+    "category": "Wedding Venues",
+    "description": "Discover luxury wedding venues and planners in Abuja.",
+    "images": ["https://example.com/event2.jpg"],
+    "ticketTypes": [
+      {
+        "type": "Early Bird",
+        "price": 10000,
+        "quantity": 100
+      },
+      {
+        "type": "VIP",
+        "price": 20000,
+        "quantity": 50
+      }
+    ],
+    "Location": {
+      "coordinates": [7.4951, 9.0579],
+      "address": "Transcorp Hilton, Abuja",
+      "description": "Premium wedding event venue in Abuja."
+    }
+  },
+  {
+    "creator": "65a123456789abcd12345680",
+    "title": "Tech Entrepreneurs Meetup",
+    "eventDate": "2025-02-20",
+    "category": "Meeting Venues",
+    "description": "Network with top tech entrepreneurs in Lagos.",
+    "images": ["https://example.com/event3.jpg"],
+    "ticketTypes": [
+      {
+        "type": "Standard",
+        "price": 5000,
+        "quantity": 100
+      }
+    ],
+    "Location": {
+      "coordinates": [3.3431, 6.5246],
+      "address": "Landmark Event Center, Lagos",
+      "description": "A perfect meeting venue for tech professionals."
+    }
+  },
+  {
+    "creator": "65a123456789abcd12345681",
+    "title": "Children’s Birthday Bash",
+    "eventDate": "2025-06-12",
+    "category": "Birthday Venues",
+    "description": "An amazing birthday celebration with fun activities for kids.",
+    "images": ["https://example.com/event4.jpg"],
+    "ticketTypes": [
+      {
+        "type": "Standard",
+        "price": 3000,
+        "quantity": 50
+      }
+    ],
+    "Location": {
+      "coordinates": [5.0304, 7.8504],
+      "address": "Ibom Tropicana, Uyo",
+      "description": "A child-friendly venue for birthdays in Uyo."
+    }
+  },
+  {
+    "creator": "65a123456789abcd12345682",
+    "title": "Pre-Wedding Photoshoot",
+    "eventDate": "2025-05-05",
+    "category": "Pre-wed shoot",
+    "description": "Capture your love story with a breathtaking photoshoot.",
+    "images": ["https://example.com/event5.jpg"],
+    "ticketTypes": [
+      {
+        "type": "VIP",
+        "price": 15000,
+        "quantity": 20
+      }
+    ],
+    "Location": {
+      "coordinates": [4.5286, 8.5363],
+      "address": "Le Meridien, Uyo",
+      "description": "A beautiful location for pre-wedding shoots."
+    }
+  },
+  {
+    "creator": "65a123456789abcd12345683",
+    "title": "Co-working Hub Meetup",
+    "eventDate": "2025-02-28",
+    "category": "Co-working",
+    "description": "A networking event for remote workers and entrepreneurs.",
+    "images": ["https://example.com/event6.jpg"],
+    "ticketTypes": [
+      {
+        "type": "Standard",
+        "price": 5000,
+        "quantity": 80
+      }
+    ],
+    "Location": {
+      "coordinates": [3.4001, 6.4503],
+      "address": "Co-Creation Hub, Lagos",
+      "description": "Ideal co-working space for entrepreneurs."
+    }
+  },
+  {
+    "creator": "65a123456789abcd12345684",
+    "title": "Beach Party Hangout",
+    "eventDate": "2025-07-01",
+    "category": "Casual Party",
+    "description": "Enjoy an exciting day out at the beach with great vibes.",
+    "images": ["https://example.com/event7.jpg"],
+    "ticketTypes": [
+      {
+        "type": "Early Bird",
+        "price": 5000,
+        "quantity": 100
+      }
+    ],
+    "Location": {
+      "coordinates": [3.3456, 6.4481],
+      "address": "Elegushi Beach, Lagos",
+      "description": "Relaxing and fun atmosphere by the beach."
+    }
+  },
+  {
+    "creator": "65a123456789abcd12345685",
+    "title": "Afrobeat Concert Night",
+    "eventDate": "2025-08-21",
+    "category": "Concerts",
+    "description": "An electrifying Afrobeat concert featuring top artists.",
+    "images": ["https://example.com/event8.jpg"],
+    "ticketTypes": [
+      {
+        "type": "VIP",
+        "price": 20000,
+        "quantity": 150
+      },
+      {
+        "type": "Standard",
+        "price": 10000,
+        "quantity": 500
+      }
+    ],
+    "Location": {
+      "coordinates": [7.4147, 9.0765],
+      "address": "National Stadium, Abuja",
+      "description": "A night of nonstop Afrobeat music and entertainment."
+    }
+  },
+
+  {
     "creator": "63f2c99f9d4d8e4b5b5efc51",
     "organizers": ["63f2c99f9d4d8e4b5b5efc52", "63f2c99f9d4d8e4b5b5efc53"],
     "title": "Annual Music Concert",
