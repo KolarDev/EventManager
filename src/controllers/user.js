@@ -72,7 +72,7 @@ const userProfile = catchAsync(async (req, res, next) => {
 const getAllUsers = catchAsync(async (req, res, next) => {
   const users = await User.find();
 
-  if (!user) return next(new AppError("Users not found", 404));
+  if (!users) return next(new AppError("Users not found", 404));
 
   res.status(200).json({
     status: "success",
