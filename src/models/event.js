@@ -22,7 +22,11 @@ const eventSchema = mongoose.Schema({
   },
   category: {
     type: String,
-    enum: ["Concerts", "Wedding", "Podcast"],
+    enum: [
+      "Turfs ground", "Wedding Venues", "Meeting Venues",
+      "Birthday Venues", "Pre-wed shoot", "Co-working",
+      "Casual Party", "Concerts",
+    ],
   },
   description: {
     type: String,
