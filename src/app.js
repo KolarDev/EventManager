@@ -28,6 +28,7 @@ const userRoutes = require("./routes/user");
 const eventRoutes = require("./routes/event");
 const ticketRoutes = require("./routes/ticket");
 const cartRoutes = require("./routes/cart");
+const favoritesRoutes = require("./routes/favorites");
 
 const app = express();
 
@@ -118,6 +119,7 @@ app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/events", eventRoutes);
 app.use("/api/v1/tickets", ticketRoutes);
 app.use("/api/v1/carts", cartRoutes);
+app.use("/api/v1/favorites", favoritesRoutes);
 
 // When user enters undefined route
 app.all("*", (req, res, next) => {

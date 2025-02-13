@@ -27,5 +27,10 @@ exports.getCategories = (Model) =>
       responseData.data.events = events;
     }
 
+    // Check if no categories
+    if (categories.length === 0) {
+      responseData.data.categories = "No categories found";
+    }
+
     res.status(200).json(responseData);
   });
