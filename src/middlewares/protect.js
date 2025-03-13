@@ -45,7 +45,7 @@ const restrictTo = (...roles) => {
   };
 };
 
-restrictTo(["admin"]);
+// restrictTo(["user"]);
 
 module.exports = {
   protectRoute,
