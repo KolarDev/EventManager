@@ -36,40 +36,8 @@ const purchaseTicket = catchAsync(async (req, res, next) => {
   });
 });
 
-// Verify payment and issue ticket
-const verifyPayment = catchAsync(async (req, res, next) => {
-  const { reference, eventId, ticketType } = req.query;
-
-  // Verify Paystack payment
-  const verification = await paystack.transaction.verify({ reference });
-  if (verification.data.status !== "success") {
-    return next(new AppError("Payment verification failed", 400));
-  }
-  // Update event and ticket
-  const event = await Event.findById(eventId);
-  const ticket = event.ticketTypes.find((t) => t.type === ticketType);
-  ticket.sold += 1;
-  await event.save();
-
-  // Generate QR code for the ticket
-  const qrData = `event=${event.title}&type=${ticketType}&user=${req.user._id}&${Date.now()}`;
-  const qrCode = await QRCode.toDataURL(qrData);
-
-  // Create ticket in database
-  const issuedTicket = await Ticket.create({
-    event: eventId,
-    user: req.user._id,
-    type: ticketType,
-    qrCode,
-  });
-
-  res.status(201).json({
-    status: "success",
-    ticket: issuedTicket,
-  });
-});
-
-const paystackWebhook = catchAsync(async (req, res) => {
+const paystackWebhook = catchAsync(async (req, res, next) => {
+  console.log("Hit the webhook");
   const paystackSecret = process.env.PAYSTACK_SECRET_KEY;
   const hash = crypto
     .createHmac("sha512", paystackSecret)
@@ -83,12 +51,13 @@ const paystackWebhook = catchAsync(async (req, res) => {
   const event = req.body.event;
   if (event === "charge.success") {
     const { reference, customer, metadata, amount } = req.body.data;
+    console.log(metadata);
 
     // Get event & ticket details from metadata
     const { eventId, ticketType, userId } = metadata;
 
     const event = await Event.findById(eventId);
-    if (!event) next(new AppError("Event not found", 404));
+    if (!event) return next(new AppError("Event not found", 404));
 
     // Check ticket type
     const ticket = event.ticketTypes.find((t) => t.type === ticketType);
@@ -122,7 +91,7 @@ const paystackWebhook = catchAsync(async (req, res) => {
       ticket: newTicket,
     });
   }
-
+  console.log("Webhook Received!");
   res.status(200).send("Webhook received");
 });
 
@@ -150,9 +119,53 @@ const validateTicket = catchAsync(async (req, res, next) => {
   });
 });
 
+const getAllTickets = catchAsync(async (req, res) => {
+  const tickets = await Ticket.find();
+  res.status(200).json({
+    status: "success",
+    data: {
+      tickets,
+    },
+  });
+});
+
 module.exports = {
   purchaseTicket,
-  verifyPayment,
+  //verifyPayment,
   validateTicket,
   paystackWebhook,
+  getAllTickets,
 };
+
+// Verify payment and issue ticket
+// const verifyPayment = catchAsync(async (req, res, next) => {
+//   const { reference, eventId, ticketType } = req.query;
+
+//   // Verify Paystack payment
+//   const verification = await paystack.transaction.verify({ reference });
+//   if (verification.data.status !== "success") {
+//     return next(new AppError("Payment verification failed", 400));
+//   }
+//   // Update event and ticket
+//   const event = await Event.findById(eventId);
+//   const ticket = event.ticketTypes.find((t) => t.type === ticketType);
+//   ticket.sold += 1;
+//   await event.save();
+
+//   // Generate QR code for the ticket
+//   const qrData = `event=${event.title}&type=${ticketType}&user=${req.user._id}&${Date.now()}`;
+//   const qrCode = await QRCode.toDataURL(qrData);
+
+//   // Create ticket in database
+//   const issuedTicket = await Ticket.create({
+//     event: eventId,
+//     user: req.user._id,
+//     type: ticketType,
+//     qrCode,
+//   });
+
+//   res.status(201).json({
+//     status: "success",
+//     ticket: issuedTicket,
+//   });
+// });

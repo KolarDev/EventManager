@@ -6,17 +6,20 @@ const {
   verifyPayment,
   validateTicket,
   paystackWebhook,
+  getAllTickets,
 } = require("./../controllers/ticket");
 
 const router = express.Router();
 
-router.post("verify-payment-webhook", paystackWebhook);
+router.post("/paystack-webhook", paystackWebhook);
 
 router.use(protectRoute);
 
 // Purchase and verify tickets
 router.post("/purchase", purchaseTicket);
 // router.get('/verify-payment', verifyPayment);
+
+router.get("/all-tickets", getAllTickets);
 
 router.use(restrictTo("admin"));
 // Validate ticket
