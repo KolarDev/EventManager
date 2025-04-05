@@ -1,29 +1,31 @@
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
-const passport = require('passport');
+const passport = require("passport");
 const bodyparser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const session = require('express-session');
+const session = require("express-session");
 // Security
 const rateLimit = require("express-rate-limit");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
 const helmet = require("helmet");
-// Logging
-const morgan = require("morgan");
-const logger = require("./utils/logger");
-
-// Passport configuration
-require('./config/passport');
-
-
 // Error Handling
 const AppError = require("./utils/appError");
 const errorHandler = require("./middlewares/errorHandler");
 
-// Routes
+// Logging
+const morgan = require("morgan");
+const logger = require("./utils/logger");
+//Documentation
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+
+// Passport configuration
+require("./config/passport");
+
+// Import Routes
 const userRoutes = require("./routes/user");
 const eventRoutes = require("./routes/event");
 const ticketRoutes = require("./routes/ticket");
@@ -105,6 +107,37 @@ app.use(cookieParser());
 // // Initialize Passport
 // app.use(passport.initialize());
 // app.use(passport.session());
+
+// Swagger options settings
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Event Management System API",
+      version: "1.0.0",
+    },
+    servers: [
+      {
+        url: "http://localhost:4041",
+      },
+    ],
+  },
+  apis: ["./app.js"],
+};
+//Docs route
+const swaggerSpec = swaggerJsdoc(options);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+/**
+ * @swagger
+ *  /:
+ *    get:
+ *        summary: The api endpoint is the home route to test the api
+ *        description: The api endpoint is the home route to test the api
+ *        responses:
+ *            200:
+ *                description: Base home route
+ */
 
 // Home route
 app.get("/", (req, res) => {

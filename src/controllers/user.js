@@ -18,25 +18,6 @@ const signUpUser = catchAsync(async (req, res, next) => {
   sendToken(user, 201, res);
 });
 
-// If not using catchAsync
-// const signUpUser = async (req, res, next) => {
-//   const { fullname, phone, email, password, passwordConfirm } = req.body;
-// try {
-
-//   const user = await User.create({
-//     fullname,
-//     phone,
-//     email,
-//     password,
-//     passwordConfirm,
-//   });
-
-//   sendToken(user, 201, res);
-// } catch (err) {
-//   next(err)
-// }
-// };
-
 // Logging user in
 const loginUser = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
