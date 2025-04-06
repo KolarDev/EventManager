@@ -19,8 +19,8 @@ const errorHandler = require("./middlewares/errorHandler");
 const morgan = require("morgan");
 const logger = require("./utils/logger");
 //Documentation
-const swaggerJsdoc = require("swagger-jsdoc");
-const swaggerUi = require("swagger-ui-express");
+// const swaggerJsdoc = require("swagger-jsdoc");
+// const swaggerUi = require("swagger-ui-express");
 
 // Passport configuration
 require("./config/passport");
@@ -33,6 +33,41 @@ const cartRoutes = require("./routes/cart");
 const favoritesRoutes = require("./routes/favorites");
 
 const app = express();
+
+//Documentation
+// 📦 Init express-oas-generator BEFORE your routes
+const expressOasGenerator = require('express-oas-generator');
+expressOasGenerator.init(app,  {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Event Management API',
+      version: '1.0.0',
+      description: 'Auto-generated Swagger docs for event management API using express-oas-generator'
+    },
+    servers: [
+      {
+        url: 'http://localhost:4041',
+        description: 'Local development server'
+      }
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT'
+        }
+      }
+    },
+    security: [
+      {
+        bearerAuth: []
+      }
+    ]
+  }
+});
+
 
 //                                    MIDDLEWARES
 // Cross-Origin Resource Sharing
@@ -109,35 +144,35 @@ app.use(cookieParser());
 // app.use(passport.session());
 
 // Swagger options settings
-const options = {
-  definition: {
-    openapi: "3.0.0",
-    info: {
-      title: "Event Management System API",
-      version: "1.0.0",
-    },
-    servers: [
-      {
-        url: "http://localhost:4041",
-      },
-    ],
-  },
-  apis: ["./app.js"],
-};
-//Docs route
-const swaggerSpec = swaggerJsdoc(options);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// const options = {
+//   definition: {
+//     openapi: "3.0.0",
+//     info: {
+//       title: "Event Management System API",
+//       version: "1.0.0",
+//     },
+//     servers: [
+//       {
+//         url: "http://localhost:4041",
+//       },
+//     ],
+//   },
+//   apis: ["./app.js"],
+// };
+// //Docs route
+// const swaggerSpec = swaggerJsdoc(options);
+// app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-/**
- * @swagger
- *  /:
- *    get:
- *        summary: The api endpoint is the home route to test the api
- *        description: The api endpoint is the home route to test the api
- *        responses:
- *            200:
- *                description: Base home route
- */
+// /**
+//  * @swagger
+//  *  /:
+//  *    get:
+//  *        summary: The api endpoint is the home route to test the api
+//  *        description: The api endpoint is the home route to test the api
+//  *        responses:
+//  *            200:
+//  *                description: Base home route
+//  */
 
 // Home route
 app.get("/", (req, res) => {
