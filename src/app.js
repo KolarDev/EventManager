@@ -20,7 +20,7 @@ const morgan = require("morgan");
 const logger = require("./utils/logger");
 //Documentation
 // const swaggerJsdoc = require("swagger-jsdoc");
-// const swaggerUi = require("swagger-ui-express");
+const swaggerUi = require("swagger-ui-express");
 
 // Passport configuration
 require("./config/passport");
@@ -38,34 +38,34 @@ const app = express();
 // 📦 Init express-oas-generator BEFORE your routes
 const expressOasGenerator = require('express-oas-generator');
 expressOasGenerator.init(app,  {
-  definition: {
-    openapi: '3.0.0',
-    info: {
-      title: 'Event Management API',
-      version: '1.0.0',
-      description: 'Auto-generated Swagger docs for event management API using express-oas-generator'
-    },
-    servers: [
-      {
-        url: 'http://localhost:4041',
-        description: 'Local development server'
-      }
-    ],
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT'
-        }
-      }
-    },
-    security: [
-      {
-        bearerAuth: []
-      }
-    ]
-  }
+  // definition: {
+  //   openapi: '3.0.0',
+  //   info: {
+  //     title: 'Event Management API',
+  //     version: '1.0.0',
+  //     description: 'Auto-generated Swagger docs for event management API using express-oas-generator'
+  //   },
+  //   servers: [
+  //     {
+  //       url: 'http://localhost:4041',
+  //       description: 'Local development server'
+  //     }
+  //   ],
+  //   components: {
+  //     securitySchemes: {
+  //       bearerAuth: {
+  //         type: 'http',
+  //         scheme: 'bearer',
+  //         bearerFormat: 'JWT'
+  //       }
+  //     }
+  //   },
+  //   security: [
+  //     {
+  //       bearerAuth: []
+  //     }
+  //   ]
+  // }
 });
 
 
@@ -175,6 +175,14 @@ app.use(cookieParser());
 //  */
 
 // Home route
+
+//Documentation route
+// app.use(
+//   '/api-docs',
+//   swaggerUi.serve,
+//   swaggerUi.setup(require(path.join(__dirname, 'openapi.json')))
+// );
+
 app.get("/", (req, res) => {
   res.status(200).json({
     status: "success",
