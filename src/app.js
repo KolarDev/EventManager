@@ -34,41 +34,6 @@ const favoritesRoutes = require("./routes/favorites");
 
 const app = express();
 
-//Documentation
-// 📦 Init express-oas-generator BEFORE your routes
-const expressOasGenerator = require('express-oas-generator');
-expressOasGenerator.init(app,  {
-  // definition: {
-  //   openapi: '3.0.0',
-  //   info: {
-  //     title: 'Event Management API',
-  //     version: '1.0.0',
-  //     description: 'Auto-generated Swagger docs for event management API using express-oas-generator'
-  //   },
-  //   servers: [
-  //     {
-  //       url: 'http://localhost:4041',
-  //       description: 'Local development server'
-  //     }
-  //   ],
-  //   components: {
-  //     securitySchemes: {
-  //       bearerAuth: {
-  //         type: 'http',
-  //         scheme: 'bearer',
-  //         bearerFormat: 'JWT'
-  //       }
-  //     }
-  //   },
-  //   security: [
-  //     {
-  //       bearerAuth: []
-  //     }
-  //   ]
-  // }
-});
-
-
 //                                    MIDDLEWARES
 // Cross-Origin Resource Sharing
 app.use(cors());
