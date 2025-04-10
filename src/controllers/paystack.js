@@ -1,7 +1,7 @@
 const crypto = require("crypto");
 const QRCode = require("qrcode");
-const Event = require("../models/eventModel");
-const Ticket = require("../models/ticketModel");
+const Event = require("../models/event");
+const Ticket = require("../models/ticket");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
