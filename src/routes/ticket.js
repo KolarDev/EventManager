@@ -1,11 +1,11 @@
 const express = require("express");
 const User = require("../models/user");
 const { protectRoute, restrictTo } = require("../middlewares/protect");
+const paystackWebhook = require("./../controllers/paystack");
 const {
   purchaseTicket,
   verifyPayment,
   validateTicket,
-  paystackWebhook,
   getAllTickets,
 } = require("./../controllers/ticket");
 
