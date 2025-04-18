@@ -5,6 +5,7 @@ const Ticket = require("../models/ticket");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
+// Paystack calls this endpoint after user a payment success or failed
 const paystackWebhook = catchAsync(async (req, res, next) => {
   console.log("📩 Paystack webhook hit");
 
@@ -65,21 +66,16 @@ const paystackWebhook = catchAsync(async (req, res, next) => {
         ticket: newTicket,
       });
     }
-
+    // Simply send a message and do nothing if charge fails 
     case "charge.failed": {
       const { reference, metadata, customer } = eventData;
       console.warn("❌ Payment failed:", reference);
 
-      return res.status(200).send("Payment failed handled");
+      return res.status(200).json({
+        status: "success",
+        message: "Payment failed handled",
+      });
     }
-
-    // case "transfer.failed":
-    // case "transfer.reversed": {
-    //   const { reference, reason } = eventData;
-    //   console.warn("⚠️ Transfer failed or reversed:", reference, reason);
-
-    //   return res.status(200).send("Transfer issue handled");
-    // }
 
     default: {
       console.log("📬 Event received:", eventType);
@@ -87,5 +83,6 @@ const paystackWebhook = catchAsync(async (req, res, next) => {
     }
   }
 });
+
 
 module.exports = { paystackWebhook };

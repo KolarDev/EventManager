@@ -36,64 +36,64 @@ const purchaseTicket = catchAsync(async (req, res, next) => {
   });
 });
 
-const paystackWebhook = catchAsync(async (req, res, next) => {
-  console.log("Hit the webhook");
-  const paystackSecret = process.env.PAYSTACK_SECRET_KEY;
-  const hash = crypto
-    .createHmac("sha512", paystackSecret)
-    .update(JSON.stringify(req.body))
-    .digest("hex");
+// const paystackWebhook = catchAsync(async (req, res, next) => {
+//   console.log("Hit the webhook");
+//   const paystackSecret = process.env.PAYSTACK_SECRET_KEY;
+//   const hash = crypto
+//     .createHmac("sha512", paystackSecret)
+//     .update(JSON.stringify(req.body))
+//     .digest("hex");
 
-  if (hash !== req.headers["x-paystack-signature"]) {
-    return next(new AppError("Invalid signature", 400));
-  }
+//   if (hash !== req.headers["x-paystack-signature"]) {
+//     return next(new AppError("Invalid signature", 400));
+//   }
 
-  const event = req.body.event;
-  if (event === "charge.success") {
-    const { reference, customer, metadata, amount } = req.body.data;
-    console.log(metadata);
+//   const event = req.body.event;
+//   if (event === "charge.success") {
+//     const { reference, customer, metadata, amount } = req.body.data;
+//     console.log(metadata);
 
-    // Get event & ticket details from metadata
-    const { eventId, ticketType, userId } = metadata;
+//     // Get event & ticket details from metadata
+//     const { eventId, ticketType, userId } = metadata;
 
-    const event = await Event.findById(eventId);
-    if (!event) return next(new AppError("Event not found", 404));
+//     const event = await Event.findById(eventId);
+//     if (!event) return next(new AppError("Event not found", 404));
 
-    // Check ticket type
-    const ticket = event.ticketTypes.find((t) => t.type === ticketType);
-    if (!ticket || ticket.quantity - ticket.sold <= 0) {
-      return next(new AppError("Ticket Type not available", 400));
-    }
+//     // Check ticket type
+//     const ticket = event.ticketTypes.find((t) => t.type === ticketType);
+//     if (!ticket || ticket.quantity - ticket.sold <= 0) {
+//       return next(new AppError("Ticket Type not available", 400));
+//     }
 
-    // Mark ticket as sold
-    ticket.sold += 1;
-    await event.save();
+//     // Mark ticket as sold
+//     ticket.sold += 1;
+//     await event.save();
 
-    // Generate ticket with QR Code
-    const QRCode = require("qrcode");
-    const qrData = `event=${eventId}&type=${ticketType}&user=${userId}`;
-    const qrCode = await QRCode.toDataURL(qrData);
+//     // Generate ticket with QR Code
+//     const QRCode = require("qrcode");
+//     const qrData = `event=${eventId}&type=${ticketType}&user=${userId}`;
+//     const qrCode = await QRCode.toDataURL(qrData);
 
-    // Save ticket in database
-    const newTicket = await Ticket.create({
-      event: eventId,
-      user: userId,
-      type: ticketType,
-      qrCode,
-      status: "valid",
-    });
+//     // Save ticket in database
+//     const newTicket = await Ticket.create({
+//       event: eventId,
+//       user: userId,
+//       type: ticketType,
+//       qrCode,
+//       status: "valid",
+//     });
 
-    console.log("✅ Ticket Issued:", newTicket);
+//     console.log("✅ Ticket Issued:", newTicket);
 
-    return res.status(200).json({
-      status: "success",
-      message: "Payment successful, ticket issued",
-      ticket: newTicket,
-    });
-  }
-  console.log("Webhook Received!");
-  res.status(200).send("Webhook received");
-});
+//     return res.status(200).json({
+//       status: "success",
+//       message: "Payment successful, ticket issued",
+//       ticket: newTicket,
+//     });
+//   }
+//   console.log("Webhook Received!");
+//   res.status(200).send("Webhook received");
+// });
 
 // Validate ticket using QR code
 const validateTicket = catchAsync(async (req, res, next) => {
@@ -133,7 +133,7 @@ module.exports = {
   purchaseTicket,
   //verifyPayment,
   validateTicket,
-  paystackWebhook,
+  // paystackWebhook,
   getAllTickets,
 };
 
