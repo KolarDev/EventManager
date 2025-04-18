@@ -27,9 +27,9 @@ const addToCart = catchAsync(async (req, res) => {
       });
     }
   }
-
+  
+  // Find the updated cart
   cart = await Cart.findOne({ user: userId });
-
 
   res.status(200).json({
     status: "success",
@@ -68,6 +68,7 @@ const removeFromCart = catchAsync(async (req, res) => {
     return new AppError("You don't have a cart", 404);
   }
 
+  // Find the updated cart
   const updatedCart = await Cart.findOne({ user: userId })
   res.status(200).json({
     status: "success",
@@ -75,7 +76,6 @@ const removeFromCart = catchAsync(async (req, res) => {
       updatedCart,
     },
   });
-
 });
 
 module.exports = {

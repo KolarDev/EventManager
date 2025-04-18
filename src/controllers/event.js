@@ -7,7 +7,7 @@ const factory = require("./handlerFactory");
 // =============== CREATE EVENT
 const createEvent = catchAsync(async (req, res, next) => {
   // GET USERID FROM REQ
-  const { id } = req.user;
+  const { userId } = req.user;
 
   const { title, eventDate, category, description, Location, ticketTypes } =
     req.body;
@@ -24,8 +24,8 @@ const createEvent = catchAsync(async (req, res, next) => {
 
   // CREATE NEW EVENT
   const newEvent = await Event.create({
-    creator: id,
-    organizers: [id],
+    creator: userId,
+    organizers: [userId],
     title,
     eventDate,
     category,
@@ -146,7 +146,7 @@ const deleteEvent = catchAsync(async (req, res, next) => {
 
   if (currentDate < event.Date) {
     return next(
-      new AppError("Cannot delete event. Event hasnt been done.", 400)
+      new AppError("Cannot delete event. Event is still active.", 400)
     );
   }
 
@@ -214,24 +214,26 @@ const getUpcomingEvents = catchAsync(async (req, res, next) => {
     },
   });
 
-  console.log(upcomingEvents)
+  // console.log(upcomingEvents);
+
+  
 
   if (!upcomingEvents || upcomingEvents.length === 0) {
     return next(new AppError("No events found within the next month", 404));
   }
 
-  const upcomingEventsInfo = upcomingEvents.map(event => {
-    return {
-      date: event.eventDate,
-      title: event.title,
-      address: event.Location.address,
-    }
-  })
+  // const upcomingEventsInfo = upcomingEvents.map(event => {
+  //   return {
+  //     date: event.eventDate,
+  //     title: event.title,
+  //     address: event.Location.address,
+  //   }
+  // });
 
   res.status(200).json({
     status: "success",
     data: {
-      events: upcomingEventsInfo
+      upcomingEvents
     },
   });
 });

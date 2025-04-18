@@ -3,7 +3,7 @@ const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
 
-
+// Add events to favourites
 const addToFavorites = catchAsync(async (req, res) => {
     const { eventId } = req.params;
     const userId = req.user.id;
@@ -11,7 +11,7 @@ const addToFavorites = catchAsync(async (req, res) => {
     let favorites = await Favorite.findOne({ user: userId });
 
     if (!favorites) {
-        // ADD USER AND EVENT TO FAVORITES
+        // SAVE USER AND EVENT TO FAVORITES
         await Favorite.create({ user: userId, events: [eventId] });
     } else {
         // CHECK IF EVENT IS ALREADY IN FAVORITES
@@ -21,13 +21,13 @@ const addToFavorites = catchAsync(async (req, res) => {
         } else {
             return res.status(200).json({
                 status: "success",
-                message: "Event is already in favorites"
+                message: "Event is already saved to favorites"
             });
         }
     }
-
+    
+    // Find the updates user favourite events
     favorites = await Favorite.findOne({ user: userId });
-
 
     res.status(200).json({
         status: "success",
@@ -36,9 +36,9 @@ const addToFavorites = catchAsync(async (req, res) => {
         },
     });
 
-})
+});
 
-
+// Remove events from favourites
 const removeFromFavorites = catchAsync(async (req, res) => {
     const { eventId } = req.params;
     const userId = req.user.id
@@ -70,7 +70,17 @@ const removeFromFavorites = catchAsync(async (req, res) => {
             updatedFavorites,
         },
     });
-})
+});
+
+// Add an email updates about favourite events
+// 1. Create a function to send and email to users about some updates on their favourite event
+// 2. Add the function to a cron job to run every 6 hours.
+//      Later we will use websockets real-time update instead of a cron job
+// 3. The function goes through all the favourites document and event in them,
+//      checks if there is an event that about to happen 
+//      or tickets is closing soon or any other vital information.
+// 4. Generate dynamically different email write ups for each cases.
+// 5. Send neccessary email notification to the prospective user
 
 module.exports = {
     addToFavorites,

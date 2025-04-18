@@ -161,5 +161,4 @@ module.exports = {
   forgotPassword,
   resetPassword,
   updatePassword,
-
 };
