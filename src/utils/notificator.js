@@ -1,14 +1,14 @@
-const nodemailer = require('nodemailer');
-const ejs = require('ejs');
-const htmlToText = require('html-to-text');
+const nodemailer = require("nodemailer");
+const ejs = require("ejs");
+const htmlToText = require("html-to-text");
 
 // This is a class that handles all sorts of email notifications in the app
 module.exports = class Email {
-  constructor(user) {
+  constructor(user, extraData = {}) {
     this.to = user.email;
     this.user = user;
     this.from = `Eventii <${process.env.EMAIL_FROM}>`;
-    this.firstName = user.fullname.split(' ')[1];
+    this;
   }
 
   newTransport() {
@@ -30,7 +30,8 @@ module.exports = class Email {
         user: this.user,
         firstName: this.firstName,
         subject,
-      },
+        ...this.extraData, // pass all extra data to the template
+      }
     );
 
     const mailOptions = {
@@ -46,11 +47,10 @@ module.exports = class Email {
   }
 
   async sendWelcome() {
-    await this.send('Welcome', 'Welcome to Eventii Event Manager App');
+    await this.send("Welcome", "Welcome to Eventii Event Manager App");
   }
 
   async sendFavouriteEventUpdate() {
-    await this.send('favouriteEventUpdate', 'Update on favorite event');
+    await this.send("favouriteEventUpdate", "Update on favorite event");
   }
-
 };
