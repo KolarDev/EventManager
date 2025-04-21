@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const ejs = require("ejs");
+const pug = require("pug");
 const htmlToText = require("html-to-text");
 
 // This is a class that handles all sorts of email notifications in the app
@@ -8,7 +8,7 @@ module.exports = class Email {
     this.to = user.email;
     this.user = user;
     this.from = `Eventii <${process.env.EMAIL_FROM}>`;
-    this;
+    this.extraData = extraData;
   }
 
   newTransport() {
@@ -23,12 +23,11 @@ module.exports = class Email {
   }
 
   // This send method should receive dynamic options to extend the object
-  async send(template, subject, dataOptions) {
-    const html = await ejs.renderFile(
-      `${__dirname}/../views/emails/${template}.ejs`,
+  async send(template, subject) {
+    const html = await pug.renderFile(
+      `${__dirname}/../views/emails/${template}.pug`,
       {
         user: this.user,
-        firstName: this.firstName,
         subject,
         ...this.extraData, // pass all extra data to the template
       }
