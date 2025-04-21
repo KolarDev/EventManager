@@ -3,6 +3,7 @@ const Event = require("./../models/event");
 const { sendToken } = require("./auth");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
+const Email = require("./../utils/notificator");
 
 const signUpUser = catchAsync(async (req, res, next) => {
   const { fullname, phone, email, password, passwordConfirm } = req.body;
@@ -16,6 +17,8 @@ const signUpUser = catchAsync(async (req, res, next) => {
   });
 
   sendToken(user, 201, res);
+  // Send a welcome email to the user
+  await Email.sendWelcome(user);
 });
 
 // Logging user in
