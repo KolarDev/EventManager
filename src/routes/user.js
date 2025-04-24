@@ -65,7 +65,7 @@ router.get(
   userProfile,
 );
 
-router.use(restrictTo(''));
+router.use(restrictTo('admin'));
 router.get(
   '/all-users',
   // #swagger.tags = ['Users']

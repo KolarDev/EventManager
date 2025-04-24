@@ -9,13 +9,13 @@ router.use(protectRoute);
 router.post(
   '/add/:eventId',
   // #swagger.tags = ['Carts']
-  // #swagger.description = ''
+  // #swagger.description = 'User adds event to cart'
   addToCart,
 );
 router.delete(
   '/remove/:eventId',
   // #swagger.tags = ['Carts']
-  // #swagger.description = ''
+  // #swagger.description = 'User removes event from cart'
   removeFromCart,
 );
 
