@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon src/server.js",
-    "start:Prod": "node src/server.js"
+    "start:Prod": "node src/server.js",
+    "gen-docs": "node src/swagger.js"
   },
   "repository": {
     "type": "git",
@@ -48,6 +49,7 @@
     "paystack-api": "^2.0.6",
     "pug": "^3.0.3",
     "qrcode": "^1.5.4",
+    "swagger-autogen": "^2.23.7",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
     "validator": "^13.12.0",
