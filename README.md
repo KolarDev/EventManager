@@ -2,7 +2,7 @@
 
 A RESTful API built with **Node.js**, **Express.js**, and **MongoDB** for managing events, ticketing, and payments using **Paystack**.
 
----
+--- 
 
 ## 🚀 Features
 
