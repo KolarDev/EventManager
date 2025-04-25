@@ -100,10 +100,61 @@ Make sure MongoDB and Paystack keys are properly configured.
 
 ---
 
+## 📘 API Documentation (Swagger)
+
+Our Event Management API is documented with **Swagger UI** for easy exploration and testing of endpoints.
+
+### 🔗 Accessing the Docs
+
+You can access the Swagger documentation via the following endpoint: /api/docs
+
+If you're running the app locally, visit: http://localhost:3000/api/docs
+
+
+> Replace `localhost:3000` with your actual domain or IP address when deployed.
+
+---
+
+### 🧭 What You Can Do
+
+- Explore all API routes including authentication, events, tickets, and payments
+- View request parameters, headers, and body examples
+- See response types and status codes
+- Test endpoints directly using the **Try it out** button
+
+---
+
+### ✅ Authentication
+
+Some endpoints are protected and require authentication via JWT. To test these endpoints:
+
+1. Click the **Authorize** button at the top-right corner of the Swagger UI.
+2. Enter your Bearer token in the following format: Bearer your_token_here
+
+
+---
+
+### 🔧 Technologies Used
+
+Swagger is set up using:
+
+- `swagger-autogen`: Auto-generates OpenAPI specification from comments on each route.
+- `swagger-ui-express`: Serves the Swagger UI at the `/api/docs` route.
+
+---
+
+### 📎 Notes
+
+- Keep your `.env` file updated with the correct `BASE_URL` for the callback to work correctly.
+- Always verify payments using the Paystack webhook and ensure tickets are issued only upon `charge.success` events.
+
+
+
+
 ## 📌 Notes
 
 - Use tools like **Postman** or **Insomnia** for testing endpoints.
-- Ensure webhook endpoint is publicly accessible (use [ngrok](https://ngrok.com/) during development).
+- Ensure webhook endpoint is publicly accessible (use [ngrok](https://ngrok.com/) or VSCode port forwarding during development).
 
 ---
 
@@ -115,7 +166,8 @@ Pull requests are welcome! For major changes, please open an issue first.
 
 ## 🧑‍💻 Author
 
-Developed by [Your Name](https://github.com/your-username) 💡
+Developed by [Muhyideen Abdulbasit](https://github.com/kolardev) 💡 
+Developed by [Salami Abdulazeez](https://github.com/tzebasdha) 💡
 
 ---
 
