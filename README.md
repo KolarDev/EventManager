@@ -64,16 +64,38 @@ BASE_URL=https://yourdomain.com
 ### Auth
 - `POST /api/v1/auth/signup` – Register user
 - `POST /api/v1/auth/login` – Login user
+- `POST /api/v1/auth/google` – Initiate login user with google
+- `POST /api/v1/auth/google/callback` – Get user data from google to login
+
+### Users
+- `POST /api/v1/users/profile` – Get user profile
+- `POST /api/v1/users/all-users` – Admin get all users
 
 ### Events
-- `POST /api/v1/events` – Create event (admin)
+- `POST /api/v1/events/create-event` – Create event (admin)
 - `GET /api/v1/events` – Get all events
+- `GET /api/v1/events/events-around` – Get events that are nearby users's location
+- `GET /api/v1/events/upcoming` – Get upcoming events (event date is close)
 - `GET /api/v1/events/:id` – Get single event
+- `PATCH /api/v1/events/:id` – Update an event (event organizer)
+- `DELETE /api/v1/events/:id` – Delete an event (event organizer)
+- `GET /api/v1/events/categories` – Get categories of events
+- `GET /api/v1/events/categories/:category` – Get events by category
 
 ### Tickets
 - `POST /api/v1/tickets/purchase` – Purchase ticket (Paystack initialization)
+- `POST /api/v1/tickets/validate` – Validate QR code ticket (Ticket organizer)
+- `POST /api/v1/tickets/all-tickets` – Admin gets the list of all tickets
+
+### Webhooks
 - `POST /webhook/paystack` – Handle Paystack webhook for payment verification
-- `POST /api/v1/tickets/validate` – Validate QR code ticket
+
+### Favourites
+- `POST /api/v1/favourites/add/:eventId` – Add an event to carts
+- `DELETE /api/v1/favourites/remove/:eventId` – Remove an event from carts
+### Favourites
+- `POST /api/v1/favourites/add/:eventId` – Add an event to favourites
+- `DELETE /api/v1/favourites/remove/:eventId` – Remove an event from favourites
 
 ---
 
