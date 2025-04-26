@@ -57,4 +57,5 @@ module.exports = class Email {
   async sendFavourite() {
     await this.send("favouriteEventUpdate", "Update on favorite event");
   }
-};
+};  
+     
