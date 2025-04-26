@@ -26,6 +26,7 @@ const swaggerUi = require("swagger-ui-express");
 require("./config/passport");
 
 // Import Routes
+const webhookRoutes = require("./routes/webhook");
 const userRoutes = require("./routes/user");
 const eventRoutes = require("./routes/event");
 const ticketRoutes = require("./routes/ticket");
@@ -156,6 +157,7 @@ app.get("/", (req, res) => {
 });
 
 // Routes
+app.use("/api/v1/", webhookRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/events", eventRoutes);
 app.use("/api/v1/tickets", ticketRoutes);
@@ -166,6 +168,8 @@ app.use("/api/v1/favorites", favoritesRoutes);
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404));
 });
+
+require('./utils/schedular');
 
 // Global Error handling middleware
 app.use(errorHandler);

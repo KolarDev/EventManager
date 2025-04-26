@@ -74,7 +74,8 @@ const removeFromFavorites = catchAsync(async (req, res) => {
 
 // Add an email updates about favourite events
 // 1. Create a function to send and email to users about some updates on their favourite event
-// 2. Add the function to a cron job to run every 6 hours.
+// 2. Add the function to a cron job to run every 6 hours
+//    to check for events that are close
 //      Later we will use websockets real-time update instead of a cron job
 // 3. The function goes through all the favourites document and event in them,
 //      checks if there is an event that about to happen 

@@ -41,7 +41,7 @@ const paystackWebhook = catchAsync(async (req, res, next) => {
       const ticket = event.ticketTypes.find((t) => t.type === ticketType);
       if (!ticket || ticket.quantity - ticket.sold <= 0) {
         console.error("❌ Ticket not available for type:", ticketType);
-        return res.status(400).send("Ticket type not available");
+        return res.status(400).send(`${ticketType} is not available`);
       }
 
       ticket.sold += 1;
@@ -63,7 +63,6 @@ const paystackWebhook = catchAsync(async (req, res, next) => {
       return res.status(200).json({
         status: "success",
         message: "Payment successful, ticket issued",
-        ticket: newTicket,
       });
     }
     // Simply send a message and do nothing if charge fails 
