@@ -46,10 +46,15 @@ module.exports = class Email {
   }
 
   async sendWelcome() {
-    await this.send("Welcome", "Welcome to Eventii Event Manager App");
+    await this.send("welcome", "Welcome to Eventii Event Manager App");
+    console.log("📧 Welcome email sent (or attempted) to:");
   }
 
   async sendFavouriteEventUpdate() {
+    await this.send("favouriteEventUpdate", "Update on favorite event");
+  }
+
+  async sendFavourite() {
     await this.send("favouriteEventUpdate", "Update on favorite event");
   }
 };

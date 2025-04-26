@@ -16,9 +16,12 @@ const signUpUser = catchAsync(async (req, res, next) => {
     passwordConfirm,
   });
 
-  sendToken(user, 201, res);
+
   // Send a welcome email to the user
-  await Email.sendWelcome(user);
+  await new Email(user).sendWelcome();
+  console.log("📧 Welcome email sent (or attempted) to:", user.email);
+  
+  sendToken(user, 201, res);
 });
 
 // Logging user in
