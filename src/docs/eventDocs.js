@@ -1,5 +1,5 @@
 module.exports = {
-  '/event/create-event': {
+  '/events/create-event': {
     post: {
       tags: ['Events'],
       summary: 'Create a new event',
@@ -45,7 +45,7 @@ module.exports = {
       },
     },
   },
-  '/events': {
+  '/events/all-events': {
     get: {
       tags: ['Events'],
       summary: 'Get all events',

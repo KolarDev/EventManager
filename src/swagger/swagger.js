@@ -21,21 +21,16 @@ const doc = {
       bearerFormat: 'JWT',
     },
   },
-  security: [
-    {
-      bearerAuth: [],
-    },
-  ],
   paths: {
     ...eventDocs,
     ...cartDocs,
     ...userDocs,
     ...favouriteDocs,
-    ...ticketDocs
+    ...ticketDocs,
   },
 };
 
 const outputFile = './swagger-output.json'; // The generated file
-const routes = ['./app.js']; // Entry point to your routes
+const routes = ['./../app.js']; // Entry point to your routes
 
 swaggerAutogen(outputFile, routes, doc);

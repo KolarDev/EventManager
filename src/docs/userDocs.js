@@ -1,7 +1,198 @@
 // docs/authDocs.js
 
 module.exports = {
-  '/api/v1/users/send-otp': {
+  '/users/signup': {
+    post: {
+      tags: ['Users'],
+      summary: 'User sign up',
+      description: 'Registers a new user and sends a welcome email.',
+      requestBody: {
+        required: true,
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              required: [
+                'fullname',
+                'phone',
+                'email',
+                'password',
+                'passwordConfirm',
+              ],
+              properties: {
+                fullname: { type: 'string', example: 'Jane Doe' },
+                phone: { type: 'string', example: '+1234567890' },
+                email: { type: 'string', example: 'jane@example.com' },
+                password: { type: 'string', example: 'pass1234' },
+                passwordConfirm: { type: 'string', example: 'pass1234' },
+              },
+            },
+          },
+        },
+      },
+      responses: {
+        201: {
+          description: 'User registered successfully and logged in',
+          content: {
+            'application/json': {
+              example: {
+                status: 'success',
+                token: 'jwt.token.here',
+                data: {
+                  user: {
+                    _id: '60c72b2f9b1e8b2d88e1c123',
+                    fullname: 'Jane Doe',
+                    email: 'jane@example.com',
+                    phone: '+1234567890',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+
+  '/users/login': {
+    post: {
+      tags: ['Users'],
+      summary: 'User login',
+      description:
+        'Logs in a registered user by verifying credentials and returns a JWT.',
+      requestBody: {
+        required: true,
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              required: ['email', 'password'],
+              properties: {
+                email: { type: 'string', example: 'jane@example.com' },
+                password: { type: 'string', example: 'pass1234' },
+              },
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: 'Login successful',
+          content: {
+            'application/json': {
+              example: {
+                status: 'success',
+                token: 'jwt.token.here',
+                data: {
+                  user: {
+                    _id: '60c72b2f9b1e8b2d88e1c123',
+                    fullname: 'Jane Doe',
+                    email: 'jane@example.com',
+                  },
+                },
+              },
+            },
+          },
+        },
+        401: {
+          description: 'Invalid credentials',
+          content: {
+            'application/json': {
+              example: {
+                status: 'fail',
+                message: 'Invalid Credentials!!',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+
+  '/users/me': {
+    get: {
+      tags: ['Users'],
+      summary: 'Get logged-in user profile',
+      description:
+        'Returns the profile information of the currently authenticated user.',
+      security: [{ bearerAuth: [] }],
+      responses: {
+        200: {
+          description: 'User profile retrieved',
+          content: {
+            'application/json': {
+              example: {
+                status: 'success',
+                data: {
+                  user: {
+                    _id: '60c72b2f9b1e8b2d88e1c123',
+                    fullname: 'Jane Doe',
+                    email: 'jane@example.com',
+                    phone: '+1234567890',
+                  },
+                },
+              },
+            },
+          },
+        },
+        404: {
+          description: 'User not found',
+          content: {
+            'application/json': {
+              example: {
+                status: 'fail',
+                message: 'User not found',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+
+  '/users': {
+    get: {
+      tags: ['Users'],
+      summary: 'Get all users',
+      description: 'Returns a list of all users (Admin access only).',
+      security: [{ bearerAuth: [] }],
+      responses: {
+        200: {
+          description: 'List of users',
+          content: {
+            'application/json': {
+              example: {
+                status: 'success',
+                data: {
+                  users: [
+                    {
+                      _id: '60c72b2f9b1e8b2d88e1c123',
+                      fullname: 'Jane Doe',
+                      email: 'jane@example.com',
+                      phone: '+1234567890',
+                    },
+                  ],
+                },
+              },
+            },
+          },
+        },
+        404: {
+          description: 'No users found',
+          content: {
+            'application/json': {
+              example: {
+                status: 'fail',
+                message: 'Users not found',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+
+  '/users/send-otp': {
     post: {
       tags: ['Auth'],
       summary: 'Send OTP to user email or phone',
@@ -26,7 +217,7 @@ module.exports = {
     },
   },
 
-  '/api/v1/users/verify-otp': {
+  '/users/verify-otp': {
     post: {
       tags: ['Auth'],
       summary: 'Verify user account using OTP',
@@ -65,7 +256,7 @@ module.exports = {
     },
   },
 
-  '/api/v1/users/forgot-password': {
+  '/users/forgot-password': {
     post: {
       tags: ['Auth'],
       summary: 'Send reset password link to user email',
@@ -103,7 +294,7 @@ module.exports = {
     },
   },
 
-  '/api/v1/users/{token}/reset-password': {
+  '/users/{token}/reset-password': {
     patch: {
       tags: ['Auth'],
       summary: 'Reset password using token',
@@ -156,7 +347,7 @@ module.exports = {
     },
   },
 
-  '/api/v1/users/update-password': {
+  '/users/update-password': {
     patch: {
       tags: ['Auth'],
       summary: 'Update password (Logged-in users)',

@@ -1,5 +1,5 @@
 module.exports = {
-  '/api/v1/tickets/purchase': {
+  '/tickets/purchase': {
     post: {
       tags: ['Tickets'],
       summary: 'Purchase a ticket',
@@ -49,7 +49,7 @@ module.exports = {
     },
   },
 
-  '/api/v1/tickets/validate': {
+  '/tickets/validate': {
     post: {
       tags: ['Tickets'],
       summary: 'Validate a ticket via QR code',
@@ -116,7 +116,7 @@ module.exports = {
     },
   },
 
-  '/api/v1/tickets': {
+  '/tickets/all-tickets': {
     get: {
       tags: ['Tickets'],
       summary: 'Get all issued tickets',

@@ -21,22 +21,19 @@ const router = express.Router();
 // User Authentication routes
 router.post(
   '/signup',
-  // #swagger.tags = ['Auths']
-  // #swagger.description = 'User registers an account'
+
   signUpUser,
 );
 router.post(
   '/login',
-  // #swagger.tags = ['Auths']
-  // #swagger.description = 'User login to his account'
+
   loginUser,
 );
 
 // Google OAuth login route
 router.get(
   '/google',
-  // #swagger.tags = ['Auths']
-  // #swagger.description = 'User login with google'
+
   passport.authenticate('google', { scope: ['profile', 'email'] }),
 );
 
@@ -44,8 +41,7 @@ router.get(
 router.get(
   '/google/callback',
   passport.authenticate('google', { session: false }),
-  // #swagger.tags = ['Auths']
-  // #swagger.description = 'Google authentication'
+
   (req, res) => {
     // Return JWT token after successful authentication
     res.json({
@@ -60,16 +56,14 @@ router.use(protectRoute);
 
 router.get(
   '/profile',
-  // #swagger.tags = ['Users']
-  // #swagger.description = 'User get profile details'
+
   userProfile,
 );
 
 router.use(restrictTo('admin'));
 router.get(
   '/all-users',
-  // #swagger.tags = ['Users']
-  // #swagger.description = 'Get a list of all users'
+
   getAllUsers,
 );
 

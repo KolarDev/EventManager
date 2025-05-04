@@ -6,7 +6,7 @@
     "version": "1.0.0"
   },
   "host": "localhost:4041",
-  "basePath": "/",
+  "basePath": "/api/v1",
   "schemes": [
     "http"
   ],
@@ -28,12 +28,47 @@
         }
       }
     },
+    "/api/v1/paystack-webhook": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-paystack-signature",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "event": {
+                  "example": "any"
+                },
+                "data": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
     "/api/v1/users/signup": {
       "post": {
-        "tags": [
-          "Auths"
-        ],
-        "description": "User registers an account",
+        "description": "",
         "parameters": [
           {
             "name": "body",
@@ -69,10 +104,7 @@
     },
     "/api/v1/users/login": {
       "post": {
-        "tags": [
-          "Auths"
-        ],
-        "description": "User login to his account",
+        "description": "",
         "parameters": [
           {
             "name": "body",
@@ -99,10 +131,7 @@
     },
     "/api/v1/users/google": {
       "get": {
-        "tags": [
-          "Auths"
-        ],
-        "description": "User login with google",
+        "description": "",
         "responses": {
           "default": {
             "description": ""
@@ -112,10 +141,7 @@
     },
     "/api/v1/users/google/callback": {
       "get": {
-        "tags": [
-          "Auths"
-        ],
-        "description": "Google authentication",
+        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -125,10 +151,7 @@
     },
     "/api/v1/users/profile": {
       "get": {
-        "tags": [
-          "Users"
-        ],
-        "description": "User get profile details",
+        "description": "",
         "parameters": [
           {
             "name": "authorization",
@@ -145,10 +168,7 @@
     },
     "/api/v1/users/all-users": {
       "get": {
-        "tags": [
-          "Users"
-        ],
-        "description": "Get a list of all users",
+        "description": "",
         "parameters": [
           {
             "name": "authorization",
@@ -165,9 +185,6 @@
     },
     "/api/v1/events/create-event": {
       "post": {
-        "tags": [
-          "Events"
-        ],
         "description": "",
         "parameters": [
           {
@@ -212,9 +229,6 @@
     },
     "/api/v1/events/all-events": {
       "get": {
-        "tags": [
-          "Events"
-        ],
         "description": "",
         "parameters": [
           {
@@ -232,9 +246,6 @@
     },
     "/api/v1/events/events-around": {
       "get": {
-        "tags": [
-          "Events"
-        ],
         "description": "",
         "parameters": [
           {
@@ -252,9 +263,6 @@
     },
     "/api/v1/events/upcoming": {
       "get": {
-        "tags": [
-          "Events"
-        ],
         "description": "",
         "parameters": [
           {
@@ -272,9 +280,6 @@
     },
     "/api/v1/events/categories": {
       "get": {
-        "tags": [
-          "Events"
-        ],
         "description": "",
         "parameters": [
           {
@@ -292,9 +297,6 @@
     },
     "/api/v1/events/categories/{category}": {
       "get": {
-        "tags": [
-          "Events"
-        ],
         "description": "",
         "parameters": [
           {
@@ -316,12 +318,74 @@
         }
       }
     },
+    "/api/v1/events/{eventId}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "patch": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/v1/tickets/paystack-webhook": {
       "post": {
-        "tags": [
-          "Webhooks"
-        ],
-        "description": "Webhooks endpoint to listen for events from paystack",
+        "description": "",
         "parameters": [
           {
             "name": "x-paystack-signature",
@@ -359,10 +423,7 @@
     },
     "/api/v1/tickets/purchase": {
       "post": {
-        "tags": [
-          "Tickets"
-        ],
-        "description": "User purchases ticket by initializing paystack payment gateway",
+        "description": "",
         "parameters": [
           {
             "name": "authorization",
@@ -394,10 +455,7 @@
     },
     "/api/v1/tickets/validate": {
       "post": {
-        "tags": [
-          "Tickets"
-        ],
-        "description": "Admin validates tickets manually",
+        "description": "",
         "parameters": [
           {
             "name": "authorization",
@@ -426,10 +484,7 @@
     },
     "/api/v1/tickets/all-tickets": {
       "get": {
-        "tags": [
-          "Tickets"
-        ],
-        "description": "Get all tickets",
+        "description": "",
         "parameters": [
           {
             "name": "authorization",
@@ -446,9 +501,6 @@
     },
     "/api/v1/carts/add/{eventId}": {
       "post": {
-        "tags": [
-          "Carts"
-        ],
         "description": "",
         "parameters": [
           {
@@ -472,9 +524,6 @@
     },
     "/api/v1/carts/remove/{eventId}": {
       "delete": {
-        "tags": [
-          "Carts"
-        ],
         "description": "",
         "parameters": [
           {
@@ -498,10 +547,7 @@
     },
     "/api/v1/favorites/add/{eventId}": {
       "post": {
-        "tags": [
-          "Favourites"
-        ],
-        "description": "User adds event to favourites",
+        "description": "",
         "parameters": [
           {
             "name": "eventId",
@@ -524,10 +570,7 @@
     },
     "/api/v1/favorites/remove/{eventId}": {
       "delete": {
-        "tags": [
-          "Favourites"
-        ],
-        "description": "User removes event from favourites",
+        "description": "",
         "parameters": [
           {
             "name": "eventId",
@@ -548,10 +591,5 @@
         }
       }
     }
-  },
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ]
+  }
 }
