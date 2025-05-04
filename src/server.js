@@ -8,7 +8,7 @@ require("./../db/database");
 
 const port = process.env.PORT || 4041;
 
-const server = app.listen(port, "0.0.0.0", () => {
+const server = app.listen(port, () => {
   console.log(`App listening on port ${port}`);
 });
 

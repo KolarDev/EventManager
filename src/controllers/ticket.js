@@ -1,11 +1,11 @@
-const crypto = require("crypto");
-const User = require("./../models/user");
-const Event = require("./../models/event");
-const Ticket = require("./../models/ticket");
-const QRCode = require("qrcode");
-const catchAsync = require("./../utils/catchAsync");
-const AppError = require("./../utils/appError");
-const paystack = require("../utils/paystack");
+const crypto = require('crypto');
+const User = require('./../models/user');
+const Event = require('./../models/event');
+const Ticket = require('./../models/ticket');
+const QRCode = require('qrcode');
+const catchAsync = require('./../utils/catchAsync');
+const AppError = require('./../utils/appError');
+const paystack = require('../utils/paystack');
 
 // Purchase ticket
 const purchaseTicket = catchAsync(async (req, res, next) => {
@@ -13,12 +13,12 @@ const purchaseTicket = catchAsync(async (req, res, next) => {
 
   // Fetch event and ticket type
   const event = await Event.findById(eventId);
-  if (!event) return next(new AppError("Event not found", 404));
+  if (!event) return next(new AppError('Event not found', 404));
 
   const ticket = event.ticketTypes.find((t) => t.type === ticketType);
   if (!ticket || ticket.quantity - ticket.sold <= 0) {
     return next(
-      new AppError(`Sorry! ${ticketType} ticket unavailable or sold out`, 404)
+      new AppError(`Sorry! ${ticketType} ticket unavailable or sold out`, 404),
     );
   }
 
@@ -31,69 +31,10 @@ const purchaseTicket = catchAsync(async (req, res, next) => {
   });
 
   res.status(200).json({
-    status: "success",
+    status: 'success',
     authorization_url: payment.data.authorization_url,
   });
 });
-
-// const paystackWebhook = catchAsync(async (req, res, next) => {
-//   console.log("Hit the webhook");
-//   const paystackSecret = process.env.PAYSTACK_SECRET_KEY;
-//   const hash = crypto
-//     .createHmac("sha512", paystackSecret)
-//     .update(JSON.stringify(req.body))
-//     .digest("hex");
-
-//   if (hash !== req.headers["x-paystack-signature"]) {
-//     return next(new AppError("Invalid signature", 400));
-//   }
-
-//   const event = req.body.event;
-//   if (event === "charge.success") {
-//     const { reference, customer, metadata, amount } = req.body.data;
-//     console.log(metadata);
-
-//     // Get event & ticket details from metadata
-//     const { eventId, ticketType, userId } = metadata;
-
-//     const event = await Event.findById(eventId);
-//     if (!event) return next(new AppError("Event not found", 404));
-
-//     // Check ticket type
-//     const ticket = event.ticketTypes.find((t) => t.type === ticketType);
-//     if (!ticket || ticket.quantity - ticket.sold <= 0) {
-//       return next(new AppError("Ticket Type not available", 400));
-//     }
-
-//     // Mark ticket as sold
-//     ticket.sold += 1;
-//     await event.save();
-
-//     // Generate ticket with QR Code
-//     const QRCode = require("qrcode");
-//     const qrData = `event=${eventId}&type=${ticketType}&user=${userId}`;
-//     const qrCode = await QRCode.toDataURL(qrData);
-
-//     // Save ticket in database
-//     const newTicket = await Ticket.create({
-//       event: eventId,
-//       user: userId,
-//       type: ticketType,
-//       qrCode,
-//       status: "valid",
-//     });
-
-//     console.log("✅ Ticket Issued:", newTicket);
-
-//     return res.status(200).json({
-//       status: "success",
-//       message: "Payment successful, ticket issued",
-//       ticket: newTicket,
-//     });
-//   }
-//   console.log("Webhook Received!");
-//   res.status(200).send("Webhook received");
-// });
 
 // Validate ticket using QR code
 const validateTicket = catchAsync(async (req, res, next) => {
@@ -101,20 +42,20 @@ const validateTicket = catchAsync(async (req, res, next) => {
 
   // Find ticket by QR code
   const ticket = await Ticket.findOne({ qrCode });
-  if (!ticket) return next(new AppError("Invalid ticket", 404));
+  if (!ticket) return next(new AppError('Invalid ticket', 404));
 
   // Check if ticket has not been used before
-  if (ticket.status === "used") {
-    return next(new AppError("Ticket already used !", 400));
+  if (ticket.status === 'used') {
+    return next(new AppError('Ticket already used !', 400));
   }
 
   // Mark ticket as used
-  ticket.status = "used";
+  ticket.status = 'used';
   await ticket.save();
 
   res.status(200).json({
-    status: "success",
-    message: "Ticket validated successfully",
+    status: 'success',
+    message: 'Ticket validated successfully',
     ticket,
   });
 });
@@ -122,7 +63,7 @@ const validateTicket = catchAsync(async (req, res, next) => {
 const getAllTickets = catchAsync(async (req, res) => {
   const tickets = await Ticket.find();
   res.status(200).json({
-    status: "success",
+    status: 'success',
     data: {
       tickets,
     },
