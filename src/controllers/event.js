@@ -207,15 +207,14 @@ const getUpcomingEvents = catchAsync(async (req, res, next) => {
   const currentDate = new Date();
 
   // Calculate the date one month from now
-  const oneMonthFromNow = new Date(currentDate);
-  oneMonthFromNow.setDate(1);
-  oneMonthFromNow.setMonth(currentDate.getMonth() + 2);
+  const oneYearFromNow = new Date();
+  oneYearFromNow.setFullYear(currentDate.getFullYear() + 1);
 
   // Fetch events that are less than a month from now
   const upcomingEvents = await Event.find({
     eventDate: {
       $gt: currentDate,
-      $lt: oneMonthFromNow,
+      $lt: oneYearFromNow,
     },
   });
 
