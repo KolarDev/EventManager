@@ -1,8 +1,8 @@
-const Event = require("./../models/event");
-const axios = require("axios");
-const catchAsync = require("./../utils/catchAsync");
-const AppError = require("./../utils/appError");
-const factory = require("./handlerFactory");
+const Event = require('./../models/event');
+const axios = require('axios');
+const catchAsync = require('./../utils/catchAsync');
+const AppError = require('./../utils/appError');
+const factory = require('./handlerFactory');
 
 // =============== CREATE EVENT
 const createEvent = catchAsync(async (req, res, next) => {
@@ -19,7 +19,7 @@ const createEvent = catchAsync(async (req, res, next) => {
   const inputTimestamp = new Date(eventDate).getTime();
   // Compare the two dates
   if (inputTimestamp < currentTimestamp) {
-    return next(new AppError("Date has passed, choose a valid date", 400));
+    return next(new AppError('Date has passed, choose a valid date', 400));
   }
 
   // CREATE NEW EVENT
@@ -35,7 +35,7 @@ const createEvent = catchAsync(async (req, res, next) => {
   });
 
   res.status(201).json({
-    status: "success",
+    status: 'success',
     data: {
       newEvent,
     },
@@ -50,7 +50,7 @@ const updateEvent = catchAsync(async (req, res, next) => {
 
   // CHECK IF EVENT EXISTS
   if (!event) {
-    return next(new AppError("Event not found", 404));
+    return next(new AppError('Event not found', 404));
   }
   // CHECK IF USER IS A CREATOR OR ORGANIZER
   const userId = req.user.id;
@@ -58,14 +58,14 @@ const updateEvent = catchAsync(async (req, res, next) => {
     event.creator === userId || event.organizers.includes(userId);
 
   if (!isAuthorized) {
-    return next(new AppError("No access to update", 403));
+    return next(new AppError('No access to update', 403));
   }
 
   await Event.findByIdAndUpdate(eventId, { $set: req.body }, { new: true });
 
   res.status(200).json({
-    status: "Success",
-    message: "Event updated successfully!",
+    status: 'Success',
+    message: 'Event updated successfully!',
     event,
   });
 });
@@ -75,8 +75,8 @@ const updateEvent = catchAsync(async (req, res, next) => {
 const getAllEvents = catchAsync(async (req, res) => {
   const events = await Event.find();
 
-  res.status(200).json({ 
-    status: "success",
+  res.status(200).json({
+    status: 'success',
     data: {
       events,
     },
@@ -94,11 +94,11 @@ const getEventByCategory = catchAsync(async (req, res, next) => {
   const events = await Event.find({ category });
 
   if (!events) {
-    return next(new AppError("No event found for this category", 404));
+    return next(new AppError('No event found for this category', 404));
   }
 
   res.status(200).json({
-    status: "Success",
+    status: 'Success',
     data: {
       events,
     },
@@ -113,11 +113,11 @@ const getEventById = catchAsync(async (req, res, next) => {
   const event = await Event.findById(eventId);
 
   if (!event) {
-    return next(new AppError("Event not found", 404));
+    return next(new AppError('Event not found', 404));
   }
 
   res.status(200).json({
-    status: "Success",
+    status: 'Success',
     data: {
       event,
     },
@@ -131,14 +131,14 @@ const deleteEvent = catchAsync(async (req, res, next) => {
   const event = await Event.findById(eventId);
   // CHECK IF EVENT EXISTS
   if (!event) {
-    return next(new AppError("Event doesnt exist", 404));
+    return next(new AppError('Event doesnt exist', 404));
   }
   // CHECK IF USER IS A CREATOR OR ORGANIZER
   const userId = req.user.id;
   const isAuthorized =
     event.creator === userId || event.organizers.includes(userId);
   if (!isAuthorized) {
-    return next(new AppError("Unauthorized to delete", 403));
+    return next(new AppError('Unauthorized to delete', 403));
   }
 
   // CHECK IF TODAY'S DATE IS GREATER THAN EVENT'S DATE
@@ -146,29 +146,34 @@ const deleteEvent = catchAsync(async (req, res, next) => {
 
   if (currentDate < event.Date) {
     return next(
-      new AppError("Cannot delete event. Event is still active.", 400)
+      new AppError('Cannot delete event. Event is still active.', 400),
     );
   }
 
   await Event.findByIdAndDelete(eventId);
   res.status(200).json({
-    status: "Success",
-    message: "Event deleted successfully",
+    status: 'Success',
+    message: 'Event deleted successfully',
   });
 });
 
 // ============== GET EVENTS AROUND USER LOCATION
 const getEventsAround = catchAsync(async (req, res, next) => {
-  // Get user ip address
-  const clientIp = req.ip === "::1" ? "8.8.8.8" : req.ip;
+  const { lat, lng, distance } = req.params;
 
-  // Get user location from IP
-  const geoResponse = await axios.get(`http://ip-api.com/json/${clientIp}`);
-  console.log(geoResponse);
-  const { lat, lon, status } = geoResponse.data;
+  if (!lat || !lng || !distance) {
+    // Get user ip address
+    const clientIp = req.ip === '::1' ? '8.8.8.8' : req.ip;
 
-  if (status !== "success") {
-    return next(new AppError("Unable to determine location", 500));
+    // Get user location from IP
+    const geoResponse = await axios.get(`http://ip-api.com/json/${clientIp}`);
+    console.log(geoResponse);
+    const { lat, lon: lng, status } = geoResponse.data;
+    const distance = 500000000000;
+
+    if (status !== 'success') {
+      return next(new AppError('Unable to determine location', 500));
+    }
   }
 
   // Fetch nearby events
@@ -176,20 +181,20 @@ const getEventsAround = catchAsync(async (req, res, next) => {
     Location: {
       $near: {
         $geometry: {
-          type: "Point",
-          coordinates: [lon, lat],
+          type: 'Point',
+          coordinates: [parseFloat(lng), parseFloat(lat)],
         },
-        $maxDistance: 5000, // 5km radius
+        $maxDistance: parseFloat(distance) * 1000,
       },
     },
   });
 
   if (!events) {
-    return next(new AppError("No event around your location", 404));
+    return next(new AppError('No event around your location', 404));
   }
 
   res.status(200).json({
-    status: "success",
+    status: 'success',
     data: {
       events,
     },
@@ -216,10 +221,8 @@ const getUpcomingEvents = catchAsync(async (req, res, next) => {
 
   // console.log(upcomingEvents);
 
-  
-
   if (!upcomingEvents || upcomingEvents.length === 0) {
-    return next(new AppError("No events found within the next month", 404));
+    return next(new AppError('No events found within the next month', 404));
   }
 
   // const upcomingEventsInfo = upcomingEvents.map(event => {
@@ -231,9 +234,9 @@ const getUpcomingEvents = catchAsync(async (req, res, next) => {
   // });
 
   res.status(200).json({
-    status: "success",
+    status: 'success',
     data: {
-      upcomingEvents
+      upcomingEvents,
     },
   });
 });

@@ -1,7 +1,7 @@
 module.exports = {
-  '/add/{eventId}': {
+  '/carts/add/{eventId}': {
     post: {
-      tags: ['Cart'],
+      tags: ['Carts'],
       summary: 'Add event to user cart',
       description: 'Allows a logged-in user to add an event to their cart.',
       parameters: [
@@ -34,66 +34,80 @@ module.exports = {
             },
           },
         },
+        401: {
+          description: 'Unauthorized - user not logged in',
+          content: {
+            'application/json': {
+              example: {
+                status: 'fail',
+                message: 'Authentication required',
+              },
+            },
+          },
+        },
       },
+      security: [{ bearerAuth: [] }],
     },
-    },
-    "/remove/:eventId": {
-        delete: {
-            tags: ['Cart'],
-            summary: 'Remove event from user cart',
-            description: "Removes an event from the user's cart if it exists.",
-            parameters: [
-              {
-                name: 'eventId',
-                in: 'path',
-                required: true,
-                schema: {
-                  type: 'string',
-                },
-                description: 'ID of the event to remove from the cart',
-              },
-            ],
-            responses: {
-              200: {
-                description: 'Event removed successfully',
-                content: {
-                  'application/json': {
-                    example: {
-                      status: 'success',
-                      data: {
-                        updatedCart: {
-                          _id: '60d...',
-                          user: '60a...',
-                          events: ['60f...'],
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-              401: {
-                description: "Event isn't in cart",
-                content: {
-                  'application/json': {
-                    example: {
-                      status: 'fail',
-                      message: 'Event isnt in cart',
-                    },
-                  },
-                },
-              },
-              404: {
-                description: 'User has no cart',
-                content: {
-                  'application/json': {
-                    example: {
-                      status: 'fail',
-                      message: "You don't have a cart",
-                    },
+  },
+
+  '/carts/remove/{eventId}': {
+    delete: {
+      tags: ['Carts'],
+      summary: 'Remove event from user cart',
+      description: "Removes an event from the user's cart if it exists.",
+      parameters: [
+        {
+          name: 'eventId',
+          in: 'path',
+          required: true,
+          schema: {
+            type: 'string',
+          },
+          description: 'ID of the event to remove from the cart',
+        },
+      ],
+      responses: {
+        200: {
+          description: 'Event removed successfully',
+          content: {
+            'application/json': {
+              example: {
+                status: 'success',
+                data: {
+                  updatedCart: {
+                    _id: '60d...',
+                    user: '60a...',
+                    events: ['60f...'],
                   },
                 },
               },
             },
           },
-    }
+        },
+        401: {
+          description: "Event isn't in cart",
+          content: {
+            'application/json': {
+              example: {
+                status: 'fail',
+                message: 'Event isnt in cart',
+              },
+            },
+          },
+        },
+        404: {
+          description: 'User has no cart',
+          content: {
+            'application/json': {
+              example: {
+                status: 'fail',
+                message: "You don't have a cart",
+              },
+            },
+          },
+        },
+      },
+      security: [{ bearerAuth: [] }],
+    },
+  },
 };

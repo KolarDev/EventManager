@@ -14,6 +14,21 @@ const doc = {
   host: 'localhost:4041',
   basePath: '/api/v1',
   schemes: ['http'],
+  tags: [
+    {
+      name: 'Carts',
+      description: 'Operations related to the shopping cart',
+    },
+    {
+      name: 'Users',
+      description: 'User authentication and profile operations',
+    },
+    {
+      name: 'Events',
+      description: 'Event-related endpoints',
+    },
+    // Add more tags as needed...
+  ],
   securityDefinitions: {
     bearerAuth: {
       type: 'http',
