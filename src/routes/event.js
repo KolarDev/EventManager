@@ -1,6 +1,7 @@
 const express = require('express');
 const User = require('../models/user');
 const { protectRoute, restrictTo } = require('../middlewares/protect');
+const createUpload = require('../middlewares/upload');
 const {
   createEvent,
   updateEvent,
@@ -10,8 +11,8 @@ const {
   deleteEvent,
   getEventsAround,
   getUpcomingEvents,
-
   getEventByCategory,
+  uploadEventImage
 } = require('./../controllers/event');
 
 const router = express.Router();
@@ -26,6 +27,15 @@ router.get('/upcoming', getUpcomingEvents);
 router.get('/categories', getCategories);
 router.get('/categories/:category', getEventByCategory);
 
+// Upload and update event image
+const eventUpload = createUpload("event-images");
+router.patch(
+  "/:id/upload-images",
+  protectRoute,
+  eventUpload.array("images", 5),
+  uploadEventImage
+);
+
 router
   .route('/:eventId')
 
@@ -35,14 +45,4 @@ router
 
 module.exports = router;
 
-/*
-/api/v1/events/create-event POST (create an event)
-/api/v1/events/all-events GET (get all events)
-/api/v1/events/events-around GET (get nearby events )
-/api/v1/events/upcoming GET (get upcoming events)
-/api/v1/events/categories/:category GET (get all events in a category. replace the :category with the category name)
-/api/v1/events/:eventId GET (get a particular event replace the :evenId with the actual event id)
-/api/v1/events/:eventId PATCH () (update a particular event replace the :evenId with the actual event id)
-/api/v1/events/:eventId DELETE (delete a particular event replace the :evenId with the actual event id)
 
-*/

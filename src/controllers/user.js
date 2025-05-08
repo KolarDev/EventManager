@@ -69,9 +69,30 @@ const getAllUsers = catchAsync(async (req, res, next) => {
   });
 });
 
+// Upload or update user profile photo
+const updateUserPhoto = async (req, res, next) => {
+  // req.file contains the uploaded Cloudinary image info
+  const photoUrl = req.file.path;
+
+  // Save photoUrl to user profile, example:
+  const user = await User.findByIdAndUpdate(
+    req.user.id,
+    { photo: photoUrl },
+    { new: true, runValidators: true }
+  );
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Photo updated successfully',
+    user,
+  });
+};
+
+
 module.exports = {
   signUpUser,
   loginUser,
   userProfile,
   getAllUsers,
+  updateUserPhoto
 };

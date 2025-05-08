@@ -124,6 +124,28 @@ const getEventById = catchAsync(async (req, res, next) => {
   });
 });
 
+// Upload or update event image
+const uploadEventImage = catchAsync(async (req, res, next) => {
+  const eventId = req.params.id;
+  const event = await Event.findById(eventId);
+  if (!event) return next(new AppError("Event not found", 404));
+
+  if (!req.files || req.files.length === 0) {
+    return next(new AppError("No image uploaded", 400));
+  }
+
+  // Append new image URLs
+  const imageUrls = req.files.map((file) => file.path);
+  event.images.push(...imageUrls);
+  await event.save();
+
+  res.status(200).json({
+    status: "success",
+    message: "Image uploaded successfully",
+    images: event.images,
+  });
+});
+
 // ============== DELETE EVENT (event can only be deleted if the event date has passed or no one has bought ticket)✍
 const deleteEvent = catchAsync(async (req, res, next) => {
   const { eventId } = req.params;
@@ -224,14 +246,6 @@ const getUpcomingEvents = catchAsync(async (req, res, next) => {
     return next(new AppError('No events found within the next month', 404));
   }
 
-  // const upcomingEventsInfo = upcomingEvents.map(event => {
-  //   return {
-  //     date: event.eventDate,
-  //     title: event.title,
-  //     address: event.Location.address,
-  //   }
-  // });
-
   res.status(200).json({
     status: 'success',
     data: {
@@ -250,4 +264,5 @@ module.exports = {
   getEventsAround,
   getUpcomingEvents,
   getEventByCategory,
+  uploadEventImage
 };

@@ -1,12 +1,14 @@
 const express = require('express');
 const User = require('../models/user');
 const passport = require('passport');
+const createUpload = require('../middlewares/upload');
 const { protectRoute, restrictTo } = require('../middlewares/protect');
 const {
   signUpUser,
   loginUser,
   userProfile,
   getAllUsers,
+  updateUserPhoto
 } = require('../controllers/user');
 
 const {
@@ -21,19 +23,16 @@ const router = express.Router();
 // User Authentication routes
 router.post(
   '/signup',
-
   signUpUser,
 );
 router.post(
   '/login',
-
   loginUser,
 );
 
 // Google OAuth login route
 router.get(
   '/google',
-
   passport.authenticate('google', { scope: ['profile', 'email'] }),
 );
 
@@ -56,14 +55,20 @@ router.use(protectRoute);
 
 router.get(
   '/profile',
-
   userProfile,
 );
 
+// Upload or update user photo
+const userUpload = createUpload("user-photos");
+router.patch('/update-photo', 
+  userUpload.single('photo'), 
+  updateUserPhoto
+);
+
+// Admin operations on users
 router.use(restrictTo('admin'));
 router.get(
   '/all-users',
-
   getAllUsers,
 );
 
