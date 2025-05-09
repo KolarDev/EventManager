@@ -9,6 +9,4 @@ cloudinary.config({
 });
 
 
-module.exports = {
-  cloudinary
-};
+module.exports = cloudinary;
