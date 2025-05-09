@@ -60,7 +60,7 @@ router.get(
 
 // Upload or update user photo
 const userUpload = createUpload("user-photos");
-router.patch('/update-photo', 
+router.patch('/upload-photo', 
   userUpload.single('photo'), 
   updateUserPhoto
 );
