@@ -126,7 +126,7 @@ const getEventById = catchAsync(async (req, res, next) => {
 
 // Upload or update event image
 const uploadEventImage = catchAsync(async (req, res, next) => {
-  const eventId = req.params.id;
+  const eventId = req.params.eventId;
   const event = await Event.findById(eventId);
   if (!event) return next(new AppError("Event not found", 404));
 
