@@ -30,7 +30,7 @@ router.get('/categories/:category', getEventByCategory);
 // Upload and update event image
 const eventUpload = createUpload("event-images");
 router.patch(
-  "/:id/upload-images",
+  "/:eventId/upload-images",
   protectRoute,
   eventUpload.array("images", 5),
   uploadEventImage
