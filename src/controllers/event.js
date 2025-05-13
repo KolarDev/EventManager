@@ -1,4 +1,4 @@
-const Event = require('./../models/event');
+const { Event, EventCategories } = require('./../models/event');
 const axios = require('axios');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('./../utils/appError');
@@ -84,8 +84,14 @@ const getAllEvents = catchAsync(async (req, res) => {
 });
 
 // ========== GET ALL CATEGORIES or CATEGORY
-const getCategories = factory.getCategories(Event);
-
+const getCategories = catchAsync(async (req, res, next) => {
+  res.status(200).json({
+    status: 'Success',
+    data: {
+      EventCategories,
+    },
+  });
+});
 // ======
 const getEventByCategory = catchAsync(async (req, res, next) => {
   const { category } = req.params;
@@ -128,10 +134,10 @@ const getEventById = catchAsync(async (req, res, next) => {
 const uploadEventImage = catchAsync(async (req, res, next) => {
   const eventId = req.params.eventId;
   const event = await Event.findById(eventId);
-  if (!event) return next(new AppError("Event not found", 404));
+  if (!event) return next(new AppError('Event not found', 404));
 
   if (!req.files || req.files.length === 0) {
-    return next(new AppError("No image uploaded", 400));
+    return next(new AppError('No image uploaded', 400));
   }
 
   // Append new image URLs
@@ -140,8 +146,8 @@ const uploadEventImage = catchAsync(async (req, res, next) => {
   await event.save();
 
   res.status(200).json({
-    status: "success",
-    message: "Image uploaded successfully",
+    status: 'success',
+    message: 'Image uploaded successfully',
     images: event.images,
   });
 });
@@ -264,5 +270,5 @@ module.exports = {
   getEventsAround,
   getUpcomingEvents,
   getEventByCategory,
-  uploadEventImage
+  uploadEventImage,
 };
