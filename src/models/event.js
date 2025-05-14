@@ -1,27 +1,26 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-const EventCategory = {
-  CONFERENCE: 'Conference',
-  WORKSHOP: 'Workshop',
-  MEETUP: 'Meetup',
-  WEBINAR: 'Webinar',
-};
-[
-  "Turfs ground", "Wedding Venues", "Meeting Venues",
-  "Birthday Venues", "Pre-wed shoot", "Co-working",
-  "Casual Party", "Concerts",
-],
+const EventCategories = [
+  'Turfs ground',
+  'Wedding Venues',
+  'Meeting Venues',
+  'Birthday Venues',
+  'Pre-wed shoot',
+  'Co-working',
+  'Casual Party',
+  'Concerts',
+];
 
 const eventSchema = mongoose.Schema({
   creator: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: 'User',
     required: true,
   },
   organizers: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
     },
   ],
   title: {
@@ -34,7 +33,7 @@ const eventSchema = mongoose.Schema({
   },
   category: {
     type: String,
-    enum: Object.values(EventCategory),
+    enum: EventCategories,
   },
   description: {
     type: String,
@@ -45,7 +44,7 @@ const eventSchema = mongoose.Schema({
     {
       type: {
         type: String,
-        enum: ["VIP", "Standard", "Early Bird"],
+        enum: ['VIP', 'Standard', 'Early Bird'],
         required: true,
       },
       price: {
@@ -65,8 +64,8 @@ const eventSchema = mongoose.Schema({
   Location: {
     type: {
       type: String,
-      default: "Point",
-      enum: ["Point"],
+      default: 'Point',
+      enum: ['Point'],
       required: true,
     },
     coordinates: {
@@ -82,8 +81,8 @@ const eventSchema = mongoose.Schema({
   },
 });
 
-eventSchema.index({ Location: "2dsphere" });
+eventSchema.index({ Location: '2dsphere' });
 
-const Event = mongoose.model("Event", eventSchema);
+const Event = mongoose.model('Event', eventSchema);
 
-module.exports = { Event, EventCategory };
+module.exports = { Event, EventCategories };
