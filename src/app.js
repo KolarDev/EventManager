@@ -70,7 +70,7 @@ app.set('trust proxy', 1);
 app.use(
   '/api',
   rateLimit({
-    limit: 50,
+    limit: 100,
     windowMs: 60 * 60 * 1000,
     message: 'IP requets exceed limit, Check back in an hour!',
     keyGenerator: (req, res) => req.ip, // Ensure it uses the real IP
